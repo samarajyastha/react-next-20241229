@@ -1,5 +1,7 @@
 import { useState } from "react";
 import Title from "./components/Title";
+import Counter from "./components/Counter";
+import Parent from "./components/Parent";
 
 function App() {
   // js code
@@ -34,6 +36,12 @@ function App() {
   // In return, write html code
   return (
     <div>
+      <Parent />
+
+      <hr />
+
+      <Counter />
+
       <h2>Name: {name}</h2>
       <h2>Title: {title}</h2>
       <hr />

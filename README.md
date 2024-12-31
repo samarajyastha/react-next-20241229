@@ -18,3 +18,9 @@ Currently, two official plugins are available:
 - Template literals
 - Spread operator
 - Destructuring
+
+## Redux
+
+1. Store - Storage of our states (Frontend DB), One and only one store
+2. Action - Function that is dispatched on user interaction (event is triggered)
+3. Reducer - Binds or connects Action and Store, Maintains UI state transition
