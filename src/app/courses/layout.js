@@ -1,9 +1,11 @@
-import React from "react";
+export const metadata = {
+  title: "Courses",
+};
 
 export default function CoursesLayout({ children }) {
   return (
     <div>
-      CoursesLayout
+      <div className="py-3 bg-slate-400">Courses Layout</div>
       <div>{children}</div>
     </div>
   );
