@@ -18,6 +18,10 @@ const navLinks = [
     route: "/courses",
   },
   {
+    label: "Users",
+    route: "/users",
+  },
+  {
     label: "Contact",
     route: CONTACT_PAGE,
   },
