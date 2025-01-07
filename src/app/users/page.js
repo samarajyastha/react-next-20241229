@@ -14,7 +14,7 @@ export default async function UsersPage() {
   return (
     <div className="flex items-center justify-center flex-col container mx-auto py-12">
       {users.map((user) => (
-        <div key={user.id} className="w-full bg-zinc-800 px-8 py-3 my-3">
+        <div key={user.id} className="w-full bg-primary px-8 py-3 my-3">
           <div className="w-full h-6 text-white">{user.name}</div>
         </div>
       ))}
