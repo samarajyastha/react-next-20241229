@@ -5,12 +5,31 @@ const tailwindConfig = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
+  darkMode: "class",
   theme: {
     extend: {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
-        primary: "#286291",
+        primary: {
+          100: "#d4e0e9",
+          200: "#7ea1bd",
+          300: "#5381a7",
+          400: "#3e729c",
+          500: "#286291",
+          600: "#204e74",
+          700: "#183b57",
+          800: "#0c1d2b",
+          900: "#08141d",
+        },
+        secondary: "#5e1916",
+      },
+      fontFamily: {
+        nunito: ["Nunito"],
+        poppins: ["Poppins"],
+        "nunito-bold": ["Nunito-Bold"],
+        "poppins-bold": ["Poppins-Bold"],
+        "nunito-extra-bold": ["Nunito-Extrabold"],
       },
     },
   },

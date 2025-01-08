@@ -13,16 +13,21 @@ export default function Home() {
     //     <p>Hari</p>
     //   </div>
     // </div>
-    <div className="bg-white dark:bg-slate-900 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-      <div className="bg-slate-700 dark:bg-slate-200 h-24 w-24 m-5"></div>
-      <div className="bg-slate-700 dark:bg-slate-200 h-24 w-24 m-5"></div>
-      <div className="bg-slate-700 dark:bg-slate-200 h-24 w-24 m-5"></div>
-      <div className="bg-slate-700 dark:bg-slate-200 h-24 w-24 m-5"></div>
-      <div className="bg-slate-700 dark:bg-slate-200 h-24 w-24 m-5"></div>
-      <div className="bg-slate-700 dark:bg-slate-200 h-24 w-24 m-5"></div>
-      <div className="bg-slate-700 dark:bg-slate-200 h-24 w-24 m-5"></div>
-      <div className="bg-slate-700 dark:bg-slate-200 h-24 w-24 m-5"></div>
-      <div className="bg-slate-700 dark:bg-slate-200 h-24 w-24 m-5"></div>
+    // <div className="bg-white dark:bg-gray-900 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    //   <div className="bg-secondary dark:bg-slate-200 h-24 w-24 m-5"></div>
+    //   <div className="bg-primary-100 dark:bg-slate-200 h-24 w-24 m-5"></div>
+    //   <div className="bg-primary-200 dark:bg-slate-200 h-24 w-24 m-5"></div>
+    //   <div className="bg-primary-300 dark:bg-slate-200 h-24 w-24 m-5"></div>
+    //   <div className="bg-primary-400 dark:bg-slate-200 h-24 w-24 m-5"></div>
+    //   <div className="bg-primary-500 dark:bg-slate-200 h-24 w-24 m-5"></div>
+    //   <div className="bg-primary-600 dark:bg-slate-200 h-24 w-24 m-5"></div>
+    //   <div className="bg-primary-700 dark:bg-slate-200 h-24 w-24 m-5"></div>
+    //   <div className="bg-primary-800 dark:bg-slate-200 h-24 w-24 m-5"></div>
+    //   <div className="bg-primary-900 dark:bg-slate-200 h-24 w-24 m-5"></div>
+    // </div>
+
+    <div className="p-10 min-h-svh">
+      <h1 className="text-3xl font-poppins-bold">Hello world</h1>
     </div>
   );
 }
