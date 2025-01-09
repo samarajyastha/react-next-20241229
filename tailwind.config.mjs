@@ -12,6 +12,7 @@ const tailwindConfig = {
         background: "var(--background)",
         foreground: "var(--foreground)",
         primary: {
+          50: "#eaeff4",
           100: "#d4e0e9",
           200: "#7ea1bd",
           300: "#5381a7",
@@ -23,6 +24,7 @@ const tailwindConfig = {
           900: "#08141d",
         },
         secondary: "#5e1916",
+        textColor: "#1c1d1d",
       },
       fontFamily: {
         nunito: ["Nunito"],
