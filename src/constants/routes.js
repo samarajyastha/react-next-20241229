@@ -1,3 +1,4 @@
-export const HOME_PAGE = "/";
-export const ABOUT_PAGE = "/about-us";
-export const CONTACT_PAGE = "/contact";
+export const HOME_ROUTE = "/";
+export const ABOUT_ROUTE = "/about-us";
+export const CONTACT_ROUTE = "/contact";
+export const PRODUCTS_ROUTE = "/products";

@@ -1,6 +1,8 @@
 import Image from "next/image";
 
 import teslaCar from "@/assets/images/tesla.jpg";
+import Link from "next/link";
+import { PRODUCTS_ROUTE } from "@/constants/routes";
 
 function ProductCard({ product }) {
   return (
@@ -10,8 +12,9 @@ function ProductCard({ product }) {
         <span className="inline-flex items-center rounded-md bg-primary-100 px-2 py-1 text-xs font-medium text-primary-600 ring-1 ring-inset ring-primary-500/10">
           {product.brand}
         </span>
-        <h2 className="text-xl font-semibold py-1 capitalize dark:text-white">
-          {product.name}
+
+        <h2 className="text-xl font-semibold py-1 capitalize dark:text-white hover:underline">
+          <Link href={`${PRODUCTS_ROUTE}/${product._id}`}>{product.name}</Link>
         </h2>
         <p className="text-sm text-zinc-600 dark:text-gray-300">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatum,

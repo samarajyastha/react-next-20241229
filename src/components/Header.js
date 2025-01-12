@@ -1,6 +1,6 @@
 import config from "@/config/config";
 import navLinks from "@/constants/navlinks";
-import { HOME_PAGE } from "@/constants/routes";
+import { HOME_ROUTE } from "@/constants/routes";
 import Link from "next/link";
 
 function Header() {
@@ -11,7 +11,7 @@ function Header() {
           <div className="flex flex-col max-w-screen-xl mx-auto md:items-center md:justify-between md:flex-row">
             <div className="flex flex-row items-center justify-between p-4">
               <Link
-                href={HOME_PAGE}
+                href={HOME_ROUTE}
                 className="text-lg font-semibold font-nunito-extra-bold tracking-widest text-primary-500 uppercase rounded-lg dark:text-white focus:outline-none focus:shadow-outline"
               >
                {config.appName}

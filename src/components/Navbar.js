@@ -1,6 +1,6 @@
 "use client";
 import navLinks from "@/constants/navlinks";
-import { HOME_PAGE } from "@/constants/routes";
+import { HOME_ROUTE } from "@/constants/routes";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -11,7 +11,7 @@ function Navbar() {
     <nav className="md:w-1/2 flex justify-between">
       {navLinks.map((navLink, index) => {
         const isActive =
-          navLink.route == HOME_PAGE
+          navLink.route == HOME_ROUTE
             ? pathname === navLink.route
             : pathname.startsWith(navLink.route);
 

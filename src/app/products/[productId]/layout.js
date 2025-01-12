@@ -1,6 +1,6 @@
 // Dynamic metadata
 export async function generateMetadata({ params }) {
-  const id = await params.productId;
+  const id = (await params).productId;
 
   return {
     title: `Product id: ${id}`,
@@ -10,7 +10,6 @@ export async function generateMetadata({ params }) {
 export default function ProductByIdLayout({ children }) {
   return (
     <div>
-      ProductByIdLayout
       {children}
     </div>
   );

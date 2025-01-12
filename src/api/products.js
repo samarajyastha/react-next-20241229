@@ -7,7 +7,14 @@ async function getAllProducts() {
   return response.data;
 }
 
-export { getAllProducts };
+// baseUrl/api/products/:id
+async function getProductById(id) {
+  const response = await axios.get(`${config.apiUrl}/api/products/${id}`);
+
+  return response.data;
+}
+
+export { getAllProducts, getProductById };
 
 /**
  * HTTP Methods

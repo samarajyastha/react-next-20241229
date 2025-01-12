@@ -1,17 +1,22 @@
-const { HOME_PAGE, ABOUT_PAGE, CONTACT_PAGE } = require("./routes");
+const {
+  HOME_ROUTE,
+  ABOUT_ROUTE,
+  CONTACT_ROUTE,
+  PRODUCTS_ROUTE,
+} = require("./routes");
 
 const navLinks = [
   {
     label: "Home",
-    route: HOME_PAGE,
+    route: HOME_ROUTE,
   },
   {
     label: "About",
-    route: ABOUT_PAGE,
+    route: ABOUT_ROUTE,
   },
   {
     label: "Products",
-    route: "/products",
+    route: PRODUCTS_ROUTE,
   },
   {
     label: "Courses",
@@ -23,7 +28,7 @@ const navLinks = [
   },
   {
     label: "Contact",
-    route: CONTACT_PAGE,
+    route: CONTACT_ROUTE,
   },
 ];
 
