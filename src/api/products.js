@@ -14,7 +14,17 @@ async function getProductById(id) {
   return response.data;
 }
 
-export { getAllProducts, getProductById };
+async function addProduct(data) {
+  const response = await axios.post(`${config.apiUrl}/api/products`, data, {
+    headers: {
+      Authorization: `Bearer ${config.apiToken}`,
+    },
+  });
+
+  return response.data;
+}
+
+export { getAllProducts, getProductById, addProduct };
 
 /**
  * HTTP Methods
