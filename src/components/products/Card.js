@@ -3,6 +3,7 @@ import Image from "next/image";
 import teslaCar from "@/assets/images/tesla.jpg";
 import Link from "next/link";
 import { PRODUCTS_ROUTE } from "@/constants/routes";
+import { MdOutlineCategory, MdOutlineEdit } from "react-icons/md";
 
 function ProductCard({ product }) {
   return (
@@ -13,9 +14,24 @@ function ProductCard({ product }) {
           {product.brand}
         </span>
 
-        <h2 className="text-xl font-semibold py-1 capitalize dark:text-white hover:underline">
-          <Link href={`${PRODUCTS_ROUTE}/${product._id}`}>{product.name}</Link>
-        </h2>
+        <span className="ml-2 inline-flex items-center rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-red-500/10">
+        <MdOutlineCategory className="mr-1" />
+        {product.category}
+        </span>
+
+        <div className="flex items-center justify-start">
+          <h2 className="text-xl font-semibold py-1 capitalize dark:text-white hover:underline">
+            <Link href={`${PRODUCTS_ROUTE}/${product._id}`}>
+              {product.name}
+            </Link>
+          </h2>
+          <Link
+            href={`${PRODUCTS_ROUTE}/edit/${product._id}`}
+            className="ml-2 p-1 hover:text-blue-600 dark:text-white hover:dark:text-gray-200"
+          >
+            <MdOutlineEdit />
+          </Link>
+        </div>
         <p className="text-sm text-zinc-600 dark:text-gray-300">
           Lorem ipsum, dolor sit amet consectetur adipisicing elit. Voluptatum,
           magni!...

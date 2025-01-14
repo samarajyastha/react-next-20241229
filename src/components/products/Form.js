@@ -1,17 +1,20 @@
 "use client";
 
-import { addProduct } from "@/api/products";
+import { addProduct, editProduct } from "@/api/products";
+import { PRODUCTS_ROUTE } from "@/constants/routes";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 
-function ProductForm() {
+function ProductForm({ isEditing = false, product }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm();
+  } = useForm({
+    values: product,
+  });
 
   const [loading, setLoading] = useState(false);
 
@@ -21,12 +24,23 @@ function ProductForm() {
     setLoading(true);
 
     try {
-      await addProduct(data);
+      // if (isEditing) {
+      //   await editProduct(product._id, data);
+      // } else {
+      //   await addProduct(data);
+      // }
 
-      toast.success("Product added successfully.", {
-        autoClose: 1500,
-        onClose: () => router.back(),
-      });
+      isEditing ? await editProduct(product._id, data) : await addProduct(data);
+
+      toast.success(
+        isEditing
+          ? "Product updated successfully."
+          : "Product added successfully.",
+        {
+          autoClose: 1500,
+          onClose: () => router.replace(PRODUCTS_ROUTE),
+        }
+      );
     } catch (error) {
       toast.error(error.response.data, {
         autoClose: 1500,
@@ -110,7 +124,13 @@ function ProductForm() {
       <div className="flex justify-center pt-5">
         <input
           type="submit"
-          value={loading ? "Submitting..." : "Add Product +"}
+          value={
+            loading
+              ? "Submitting..."
+              : isEditing
+              ? "Edit Product"
+              : "Add Product +"
+          }
           disabled={loading}
           className="bg-primary-600 text-white px-10 py-2 rounded cursor-pointer disabled:bg-primary-300 disabled:cursor-not-allowed"
         />
