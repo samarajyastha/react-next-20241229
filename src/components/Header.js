@@ -1,6 +1,6 @@
 import config from "@/config/config";
 import navLinks from "@/constants/navlinks";
-import { HOME_ROUTE } from "@/constants/routes";
+import { HOME_ROUTE, LOGIN_ROUTE } from "@/constants/routes";
 import Link from "next/link";
 
 function Header() {
@@ -14,7 +14,7 @@ function Header() {
                 href={HOME_ROUTE}
                 className="text-lg font-semibold font-nunito-extra-bold tracking-widest text-primary-500 uppercase rounded-lg dark:text-white focus:outline-none focus:shadow-outline"
               >
-               {config.appName}
+                {config.appName}
               </Link>
               <button className="rounded-lg md:hidden focus:outline-none focus:shadow-outline">
                 <svg
@@ -45,6 +45,13 @@ function Header() {
                   {navlink.label}
                 </Link>
               ))}
+
+              <Link
+                href={LOGIN_ROUTE}
+                className="px-4 py-2 mt-2 text-sm font-semibold font-nunito bg-primary-500 text-white rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600  md:mt-0 md:ml-4 hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:shadow-outline"
+              >
+                Login
+              </Link>
             </nav>
           </div>
         </div>

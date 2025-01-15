@@ -1,5 +1,6 @@
 import config from "@/config/config";
 import axios from "axios";
+import { authToken } from "./api";
 
 async function getAllProducts() {
   const response = await axios.get(
@@ -19,7 +20,7 @@ async function getProductById(id) {
 async function addProduct(data) {
   const response = await axios.post(`${config.apiUrl}/api/products`, data, {
     headers: {
-      Authorization: `Bearer ${config.apiToken}`,
+      Authorization: `Bearer ${authToken}`,
     },
   });
 
@@ -32,7 +33,7 @@ async function editProduct(id, data) {
     data,
     {
       headers: {
-        Authorization: `Bearer ${config.apiToken}`,
+        Authorization: `Bearer ${authToken}`,
       },
     }
   );
