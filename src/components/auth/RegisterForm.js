@@ -1,28 +1,29 @@
 "use client";
 
-import { login } from "@/api/auth";
-import {
-  FORGOT_PASSWORD_ROUTE,
-  HOME_ROUTE,
-  REGISTER_ROUTE,
-} from "@/constants/routes";
-import Link from "next/link";
-import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { MdOutlineMailOutline } from "react-icons/md";
-import { toast, ToastContainer } from "react-toastify";
-import { useRouter } from "next/navigation";
 import PasswordField from "./PasswordField";
+import { HOME_ROUTE, LOGIN_ROUTE } from "@/constants/routes";
+import { MdOutlineMailOutline } from "react-icons/md";
+import { PASSWORD_REGEX } from "@/constants/regex";
+import { signup } from "@/api/auth";
+import { toast, ToastContainer } from "react-toastify";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 import Spinner from "../Spinner";
+import { RiUser3Fill } from "react-icons/ri";
 
-function LoginForm() {
+function RegisterForm() {
   const {
     register,
     formState: { errors },
     handleSubmit,
+    watch,
   } = useForm();
 
   const [loading, setLoading] = useState(false);
+
+  const password = watch("password");
 
   const router = useRouter();
 
@@ -30,11 +31,11 @@ function LoginForm() {
     setLoading(true);
 
     try {
-      const response = await login(data);
+      const response = await signup(data);
 
       localStorage.setItem("authToken", response.token);
 
-      toast.success("Login successful.", {
+      toast.success("Register successful.", {
         autoClose: 1500,
         onClose: () => router.push(HOME_ROUTE),
       });
@@ -49,6 +50,21 @@ function LoginForm() {
 
   return (
     <form onSubmit={handleSubmit(submitForm)}>
+      <div className="py-2">
+        <div className="flex items-end border-b border-gray-500 dark:text-white">
+          <RiUser3Fill className="mb-2" />
+          <input
+            type="text"
+            id="name"
+            className="px-3 py-1 w-full mt-1 bg-transparent focus:outline-none"
+            placeholder="Your full name"
+            {...register("name", {
+              required: "Full name is required.",
+            })}
+          />
+        </div>
+        <p className="text-red-600 text-sm m-1">{errors.name?.message}</p>
+      </div>
       <div className="py-2">
         <div className="flex items-end border-b border-gray-500 dark:text-white">
           <MdOutlineMailOutline className="mb-2" />
@@ -70,24 +86,33 @@ function LoginForm() {
           placeholder="Your password"
           {...register("password", {
             required: "Password is required.",
+            pattern: {
+              value: PASSWORD_REGEX,
+              message:
+                "Password must contain uppercase, lowercase, numbers and special characters.",
+            },
+            minLength: {
+              value: 6,
+              message: "Password length must be greater than 6.",
+            },
           })}
         />
         <p className="text-red-600 text-sm m-1">{errors.password?.message}</p>
       </div>
-      <div className="flex flex-col sm:flex-row justify-between mb-3">
-        <div>
-          <input type="checkbox" id="rememberMe" />
-          <label htmlFor="rememberMe" className="text-sm ml-2 dark:text-white ">
-            Remember me
-          </label>
-        </div>
-
-        <Link
-          href={FORGOT_PASSWORD_ROUTE}
-          className="text-sm underline text-primary-400 hover:text-primary-600 dark:text-white hover:dark:text-gray-200"
-        >
-          Forgot password?
-        </Link>
+      <div className="py-2 ">
+        <PasswordField
+          id="confirmPassword"
+          placeholder="Confirm password"
+          {...register("confirmPassword", {
+            required: "Confirm password is required.",
+            validate: (value) => {
+              return value == password || "Passwords do not match.";
+            },
+          })}
+        />
+        <p className="text-red-600 text-sm m-1">
+          {errors.confirmPassword?.message}
+        </p>
       </div>
 
       <button
@@ -96,14 +121,14 @@ function LoginForm() {
         className="flex items-center mt-3 bg-primary-600 text-white px-10 py-2 rounded cursor-pointer disabled:bg-primary-300 disabled:cursor-not-allowed hover:bg-primary-700"
       >
         {loading ? <Spinner className="w-6 h-6  mr-2" /> : null}
-        Login
+        Register
       </button>
 
       <Link
-        href={REGISTER_ROUTE}
+        href={LOGIN_ROUTE}
         className="text-primary-400 block mt-6 hover:underline dark:text-white"
       >
-        Create account?
+        Already have an account?
       </Link>
 
       <ToastContainer />
@@ -111,4 +136,4 @@ function LoginForm() {
   );
 }
 
-export default LoginForm;
+export default RegisterForm;
