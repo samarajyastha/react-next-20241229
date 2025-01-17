@@ -1,5 +1,9 @@
 import RegisterForm from "@/components/auth/RegisterForm";
 
+export const metadata = {
+  title: "Register",
+};
+
 function RegisterPage() {
   return (
     <div className="w-full md:w-2/3 lg:w-1/3">

@@ -1,9 +1,33 @@
+"use client";
+
+import Link from "next/link";
 import config from "@/config/config";
 import navLinks from "@/constants/navlinks";
 import { HOME_ROUTE, LOGIN_ROUTE } from "@/constants/routes";
-import Link from "next/link";
+import { ImUser } from "react-icons/im";
+import { MdLogout } from "react-icons/md";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "@/redux/auth/authSlice";
 
 function Header() {
+  const { user } = useSelector((state) => state.auth);
+
+  const [showProfile, setShowProfile] = useState(false);
+
+  const dispatch = useDispatch();
+
+  function toggleShowProfile() {
+    setShowProfile(!showProfile);
+  }
+
+  function logout() {
+    dispatch(logoutUser());
+    setShowProfile(false);
+  }
+
+  useEffect(() => {}, [showProfile]);
+
   return (
     <header className="shadow sticky top-0">
       <div className="antialiased bg-gray-100 dark:bg-gray-950">
@@ -46,12 +70,37 @@ function Header() {
                 </Link>
               ))}
 
-              <Link
-                href={LOGIN_ROUTE}
-                className="px-4 py-2 mt-2 text-sm font-semibold font-nunito bg-primary-500 text-white rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600  md:mt-0 md:ml-4 hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:shadow-outline"
-              >
-                Login
-              </Link>
+              {user ? (
+                <div className="relative">
+                  <button
+                    className="p-2 hover:bg-slate-100 hover:dark:bg-gray-800 rounded-2xl border"
+                    onClick={toggleShowProfile}
+                  >
+                    <ImUser />
+                  </button>
+                  <div
+                    className={`${
+                      showProfile ? "block" : "hidden"
+                    } w-40 py-3 px-5 rounded-xl bg-gray-50 dark:bg-gray-800 absolute top-10 right-0 shadow`}
+                  >
+                    <h3 className="mb-2 font-semibold ">Hi! {user.name}</h3>
+                    <button
+                      className="bg-primary-500 text-white w-full rounded py-1 flex items-center justify-center"
+                      onClick={logout}
+                    >
+                      Logout
+                      <MdLogout className="ml-2" />
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <Link
+                  href={LOGIN_ROUTE}
+                  className="px-4 py-2 mt-2 text-sm font-semibold font-nunito bg-primary-500 text-white rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600  md:mt-0 md:ml-4 hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:shadow-outline"
+                >
+                  Login
+                </Link>
+              )}
             </nav>
           </div>
         </div>

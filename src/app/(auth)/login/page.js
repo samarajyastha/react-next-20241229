@@ -1,5 +1,9 @@
 import LoginForm from "@/components/auth/LoginForm";
 
+export const metadata = {
+  title: "Login",
+};
+
 function LoginPage() {
   return (
     <div className="w-full md:w-2/3 lg:w-1/3">

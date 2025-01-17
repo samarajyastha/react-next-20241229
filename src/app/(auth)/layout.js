@@ -1,7 +1,21 @@
+"use client";
+
 import Image from "next/image";
 import ecommerce from "@/assets/images/ecommerce.png";
+import { HOME_ROUTE } from "@/constants/routes";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 export default function AuthLayout({ children }) {
+  const router = useRouter();
+
+  const { user } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (user) router.push(HOME_ROUTE);
+  }, [user, router]);
+
   return (
     <div className="bg-gray-100 dark:bg-gray-800">
       <div className="max-w-screen-xl mx-auto py-8 min-h-svh">

@@ -8,7 +8,7 @@ async function login({ email, password }) {
     password,
   });
 
-  return response.data;
+  return response;
 }
 
 async function signup({ name, email, password, confirmPassword }) {
@@ -19,7 +19,7 @@ async function signup({ name, email, password, confirmPassword }) {
     confirmPassword,
   });
 
-  return response.data;
+  return response;
 }
 
 export { login, signup };

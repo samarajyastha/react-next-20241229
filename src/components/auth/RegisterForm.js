@@ -1,17 +1,17 @@
 "use client";
 
+import Link from "next/link";
 import PasswordField from "./PasswordField";
-import { HOME_ROUTE, LOGIN_ROUTE } from "@/constants/routes";
+import Spinner from "../Spinner";
+import { LOGIN_ROUTE } from "@/constants/routes";
 import { MdOutlineMailOutline } from "react-icons/md";
 import { PASSWORD_REGEX } from "@/constants/regex";
-import { signup } from "@/api/auth";
-import { toast, ToastContainer } from "react-toastify";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
-import Link from "next/link";
-import Spinner from "../Spinner";
 import { RiUser3Fill } from "react-icons/ri";
+import { registerUser } from "@/redux/auth/authActions";
+import { toast, ToastContainer } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 
 function RegisterForm() {
   const {
@@ -21,32 +21,19 @@ function RegisterForm() {
     watch,
   } = useForm();
 
-  const [loading, setLoading] = useState(false);
-
   const password = watch("password");
 
-  const router = useRouter();
+  const { loading, error } = useSelector((state) => state.auth);
 
-  async function submitForm(data) {
-    setLoading(true);
+  const dispatch = useDispatch();
 
-    try {
-      const response = await signup(data);
-
-      localStorage.setItem("authToken", response.token);
-
-      toast.success("Register successful.", {
-        autoClose: 1500,
-        onClose: () => router.push(HOME_ROUTE),
-      });
-    } catch (error) {
-      toast.error(error.response.data, {
-        autoClose: 1500,
-      });
-    } finally {
-      setLoading(false);
-    }
+  function submitForm(data) {
+    dispatch(registerUser(data));
   }
+
+  useEffect(() => {
+    toast.error(error, { autoClose: 1500 });
+  }, [error]);
 
   return (
     <form onSubmit={handleSubmit(submitForm)}>

@@ -1,9 +1,9 @@
-import Navbar from "@/components/Navbar";
 import "./globals.css";
 import config from "@/config/config";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import Notification from "@/components/Notification";
+import MainLayout from "@/layouts/MainLayout";
 
 // Static metadata
 export const metadata = {
@@ -16,10 +16,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="light">
       <body>
-        <Notification />
-        <Header />
-        {children}
-        <Footer />
+        <MainLayout>{children}</MainLayout>
       </body>
     </html>
   );
