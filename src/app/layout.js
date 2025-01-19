@@ -1,9 +1,7 @@
 import "./globals.css";
 import config from "@/config/config";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
-import Notification from "@/components/Notification";
 import MainLayout from "@/layouts/MainLayout";
+import Providers from "@/redux/providers";
 
 // Static metadata
 export const metadata = {
@@ -14,9 +12,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en" className="light">
+    <html lang="en">
       <body>
-        <MainLayout>{children}</MainLayout>
+        <Providers>
+          <MainLayout>{children}</MainLayout>
+        </Providers>
       </body>
     </html>
   );

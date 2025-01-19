@@ -3,17 +3,18 @@
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
 import Notification from "@/components/Notification";
-import { store } from "@/redux/store";
-import { Provider } from "react-redux";
+import { useSelector } from "react-redux";
 
 function MainLayout({ children }) {
+  const { theme } = useSelector((state) => state.userPreferences);
+
   return (
-    <Provider store={store}>
+    <main className={theme}>
       <Notification />
       <Header />
       {children}
       <Footer />
-    </Provider>
+    </main>
   );
 }
 

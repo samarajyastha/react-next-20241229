@@ -5,13 +5,20 @@ import config from "@/config/config";
 import navLinks from "@/constants/navlinks";
 import { HOME_ROUTE, LOGIN_ROUTE } from "@/constants/routes";
 import { ImUser } from "react-icons/im";
-import { MdLogout } from "react-icons/md";
+import {
+  MdLogout,
+  MdOutlineDarkMode,
+  MdOutlineLightMode,
+} from "react-icons/md";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "@/redux/auth/authSlice";
+import { toggleTheme } from "@/redux/userPreferences/userPreferencesSlice";
+import { LIGHT_MODE } from "@/constants/theme";
 
 function Header() {
   const { user } = useSelector((state) => state.auth);
+  const { theme } = useSelector((state) => state.userPreferences);
 
   const [showProfile, setShowProfile] = useState(false);
 
@@ -24,6 +31,10 @@ function Header() {
   function logout() {
     dispatch(logoutUser());
     setShowProfile(false);
+  }
+
+  function switchTheme() {
+    dispatch(toggleTheme());
   }
 
   useEffect(() => {}, [showProfile]);
@@ -69,6 +80,14 @@ function Header() {
                   {navlink.label}
                 </Link>
               ))}
+
+              <button onClick={switchTheme} className="mx-2 p-2">
+                {theme == LIGHT_MODE ? (
+                  <MdOutlineDarkMode />
+                ) : (
+                  <MdOutlineLightMode />
+                )}
+              </button>
 
               {user ? (
                 <div className="relative">

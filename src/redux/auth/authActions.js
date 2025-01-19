@@ -33,3 +33,6 @@ const registerUser = createAsyncThunk(
 );
 
 export { loginUser, registerUser };
+
+// Function => Sync function, async function (api call)
+// Function => actions, thunk actions

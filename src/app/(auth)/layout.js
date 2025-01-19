@@ -1,16 +1,19 @@
 "use client";
 
 import Image from "next/image";
+import blazer from "@/assets/images/blazer.png";
 import ecommerce from "@/assets/images/ecommerce.png";
 import { HOME_ROUTE } from "@/constants/routes";
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useSelector } from "react-redux";
 
 export default function AuthLayout({ children }) {
   const router = useRouter();
 
   const { user } = useSelector((state) => state.auth);
+
+  const pathname = usePathname();
 
   useEffect(() => {
     if (user) router.push(HOME_ROUTE);
@@ -22,7 +25,7 @@ export default function AuthLayout({ children }) {
         <div className="bg-white dark:bg-gray-700 rounded-2xl flex items-center justify-between p-10 md:p-20 m-5 lg:m-10">
           <div className="w-1/2 mr-10 p-5 hidden md:block">
             <Image
-              src={ecommerce}
+              src={pathname == "/login" ? ecommerce : blazer}
               alt="Auth image"
               height={300}
               width={500}
