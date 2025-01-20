@@ -2,9 +2,11 @@ import config from "@/config/config";
 import axios from "axios";
 import { authToken } from "./api";
 
-async function getAllProducts() {
+async function getAllProducts(searchParams) {
   const response = await axios.get(
-    `${config.apiUrl}/api/products?limit=100&sort={"createdAt":-1}`
+    `${config.apiUrl}/api/products?limit=${searchParams?.limit || 10}&sort=${
+      searchParams?.sort ?? ""
+    }`
   );
 
   return response.data;
