@@ -8,7 +8,7 @@ async function ProductsPage({ searchParams }) {
   const products = await getAllProducts(await searchParams);
 
   return (
-    <>
+    <div className="py-8">
       <div className="flex flex-col md:flex-row items-center justify-between px-5">
         <h1 className="text-center md:text-left text-3xl md:text-4xl font-semibold text-textColor px-2 dark:text-white">
           Featured Products
@@ -28,7 +28,7 @@ async function ProductsPage({ searchParams }) {
           <ProductCard key={product._id} product={product} />
         ))}
       </div>
-    </>
+    </div>
   );
 }
 

@@ -40,7 +40,7 @@ function Header() {
   useEffect(() => {}, [showProfile]);
 
   return (
-    <header className="shadow sticky top-0">
+    <header className="shadow sticky top-0 z-10">
       <div className="antialiased bg-gray-100 dark:bg-gray-950">
         <div className="w-full text-gray-700 bg-white dark:text-gray-200 dark:bg-gray-900">
           <div className="flex flex-col max-w-screen-xl mx-auto md:items-center md:justify-between md:flex-row">

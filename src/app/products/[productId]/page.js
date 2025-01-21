@@ -26,7 +26,7 @@ async function ProductById({ params }) {
           <MdArrowBack className="mr-2" /> Go Back
         </Link>
         <Image
-          src={blazer}
+          src={product.imageUrls[0]}
           alt="Product details img"
           width={500}
           height={500}
@@ -91,6 +91,8 @@ async function ProductById({ params }) {
               Description
             </h3>
           </div>
+
+          <p className="mt-5 dark:text-white">{product.description}</p>
 
           <ul className="mt-3 px-6 list-disc dark:text-gray-100">
             <li>Features: High quality material</li>
