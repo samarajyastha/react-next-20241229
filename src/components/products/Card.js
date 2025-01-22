@@ -18,11 +18,13 @@ function ProductCard({ product }) {
         />
       </Link>
       <div className="py-3">
-        <span className="inline-flex items-center rounded-md bg-primary-100 px-2 py-1 text-xs font-medium text-primary-600 ring-1 ring-inset ring-primary-500/10">
-          {product.brand}
-        </span>
+        <Link href={`${PRODUCTS_ROUTE}/brand/${product.brand}`}>
+          <span className="inline-flex items-center rounded-md bg-primary-100 px-2 py-1 text-xs font-medium text-primary-600 ring-1 ring-inset ring-primary-500/10">
+            {product.brand}
+          </span>
+        </Link>
 
-        <Link href={`${PRODUCTS_ROUTE}?category=${product.category}`}>
+        <Link href={`${PRODUCTS_ROUTE}/category/${product.category}`}>
           <span className="ml-2 inline-flex items-center rounded-md bg-red-100 px-2 py-1 text-xs font-medium text-red-600 ring-1 ring-inset ring-red-500/10">
             <MdOutlineCategory className="mr-1" />
             {product.category}

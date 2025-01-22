@@ -1,13 +1,12 @@
 import config from "@/config/config";
 import axios from "axios";
 import { authToken } from "./api";
+import { formatSearchParams } from "@/helpers/formatParams";
 
 async function getAllProducts(searchParams) {
-  const response = await axios.get(
-    `${config.apiUrl}/api/products?limit=${searchParams?.limit || 10}&sort=${
-      searchParams?.sort ?? ""
-    }`
-  );
+  const query = formatSearchParams(searchParams);
+
+  const response = await axios.get(`${config.apiUrl}/api/products?${query}`);
 
   return response.data;
 }
@@ -43,7 +42,37 @@ async function editProduct(id, data) {
   return response.data;
 }
 
-export { getAllProducts, getProductById, addProduct, editProduct };
+async function getProductsByCategory(category) {
+  const response = await axios.get(
+    `${config.apiUrl}/api/products/category/${category}`
+  );
+
+  return response.data;
+}
+
+async function getProductsByBrand(brand) {
+  const response = await axios.get(
+    `${config.apiUrl}/api/products/brand/${brand}`
+  );
+
+  return response.data;
+}
+
+async function getBrands() {
+  const response = await axios.get(`${config.apiUrl}/api/products/brands`);
+
+  return response.data;
+}
+
+export {
+  getAllProducts,
+  getProductById,
+  addProduct,
+  editProduct,
+  getProductsByCategory,
+  getProductsByBrand,
+  getBrands,
+};
 
 /**
  * HTTP Methods
