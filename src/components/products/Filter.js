@@ -27,17 +27,22 @@ function FilterProducts({ brands }) {
     setSortFilter(event.target.value);
   }
 
-  function setFilter() {
-    const checkedBrands = brandsFilter
-      .filter((item) => item.checked)
-      .map((item) => item.name);
+  const handleCheckboxChange = (brand) => {
+    setBrandsFilter(
+      (prev) =>
+        prev.includes(brand)
+          ? prev.filter((item) => item !== brand) // Uncheck: Remove brand
+          : [...prev, brand] // Check: Add brand
+    );
+  };
 
+  function setFilter() {
     const params = new URLSearchParams(searchParams.toString());
     params.set("sort", sortFilter);
     params.set("limit", limitFilter);
     params.set("min", minPrice);
     params.set("max", maxPrice);
-    params.set("brand", checkedBrands.join(","));
+    params.set("brand", brandsFilter.join(","));
 
     router.push(pathname + "?" + params.toString());
 
@@ -145,16 +150,8 @@ function FilterProducts({ brands }) {
                     name={brand}
                     id={brand}
                     className="mr-2"
-                    onChange={(e) => {
-                      const filter = brandsFilter;
-
-                      filter.push({
-                        name: e.target.name,
-                        checked: e.target.checked,
-                      });
-
-                      setBrandsFilter(filter);
-                    }}
+                    checked={brandsFilter.includes(brand)}
+                    onChange={() => handleCheckboxChange(brand)}
                   />
                   <label htmlFor={brand}>{brand}</label>
                 </div>
