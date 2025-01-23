@@ -7,7 +7,7 @@ import { MdOutlineCategory, MdOutlineEdit } from "react-icons/md";
 
 function ProductCard({ product }) {
   return (
-    <div className="bg-gray-50 p-5 rounded-xl shadow max-w-fit dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-950">
+    <div className="bg-gray-50 p-5 rounded-xl shadow dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-950">
       <Link href={`${PRODUCTS_ROUTE}/${product.id}`}>
         <Image
           alt={product.name}

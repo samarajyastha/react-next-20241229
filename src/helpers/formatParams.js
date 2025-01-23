@@ -1,5 +1,5 @@
 export function formatSearchParams(searchParams) {
-  const { limit, sort, min, max, brand } = searchParams;
+  const { limit, sort, min, max, brand, category, name } = searchParams;
 
   let query = "";
 
@@ -12,6 +12,10 @@ export function formatSearchParams(searchParams) {
   if (max) query = `${query == "" ? "" : query + "&"}max=${max}`;
 
   if (brand) query = `${query == "" ? "" : query + "&"}brand=${brand}`;
+
+  if (category) query = `${query == "" ? "" : query + "&"}category=${category}`;
+
+  if (name) query = `${query == "" ? "" : query + "&"}name=${name}`;
 
   return query;
 }

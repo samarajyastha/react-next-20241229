@@ -1,19 +1,23 @@
 "use client";
 
-import { MdOutlineFilterAlt } from "react-icons/md";
 import Modal from "../Modal";
-import { useState } from "react";
+import { LuFilterX } from "react-icons/lu";
+import { MdOutlineFilterAlt } from "react-icons/md";
+import { PRODUCTS_ROUTE } from "@/constants/routes";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
-function FilterProducts({ brands }) {
+function FilterProducts({ brands, categories }) {
   const [showFilter, setShowFilter] = useState(false);
+
+  const [brandsFilter, setBrandsFilter] = useState([]);
+  const [category, setCategory] = useState("");
+  const [limitFilter, setLimitFilter] = useState(10);
+  const [maxPrice, setMaxPrice] = useState(1000000);
+  const [minPrice, setMinPrice] = useState(0);
   const [sortFilter, setSortFilter] = useState(
     JSON.stringify({ createdAt: -1 })
   );
-  const [limitFilter, setLimitFilter] = useState(10);
-  const [minPrice, setMinPrice] = useState(0);
-  const [maxPrice, setMaxPrice] = useState(1000000);
-  const [brandsFilter, setBrandsFilter] = useState([]);
 
   const router = useRouter();
   const pathname = usePathname();
@@ -27,30 +31,71 @@ function FilterProducts({ brands }) {
     setSortFilter(event.target.value);
   }
 
-  function setFilter() {
-    const checkedBrands = brandsFilter
-      .filter((item) => item.checked)
-      .map((item) => item.name);
+  function handleBrandsFilterChange(brand) {
+    setBrandsFilter((prev) =>
+      prev.includes(brand)
+        ? prev.filter((item) => item != brand)
+        : [...prev, brand]
+    );
+  }
 
+  function setFilter() {
     const params = new URLSearchParams(searchParams.toString());
-    params.set("sort", sortFilter);
+    params.set("brand", brandsFilter.join(","));
+    params.set("category", category);
     params.set("limit", limitFilter);
-    params.set("min", minPrice);
     params.set("max", maxPrice);
-    params.set("brand", checkedBrands.join(","));
+    params.set("min", minPrice);
+    params.set("sort", sortFilter);
 
     router.push(pathname + "?" + params.toString());
 
     setShowFilter(false);
   }
 
+  function resetFilter() {
+    setBrandsFilter([]);
+    setCategory("");
+    setLimitFilter(10);
+    setMaxPrice(1000000);
+    setMinPrice(0);
+
+    router.push(PRODUCTS_ROUTE);
+  }
+
+  useEffect(() => {
+    setFilter();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [category]);
+
   return (
-    <div className="px-3">
+    <div className="flex items-center">
+      <select
+        name="category"
+        id="category"
+        value={category}
+        className="border bg-gray-50 dark:bg-gray-950 rounded py-1 h-10 px-5 w-full"
+        onChange={(e) => setCategory(e.target.value)}
+      >
+        <option value="">Select category</option>
+        {categories.map((category) => (
+          <option key={category} value={category}>
+            {category}
+          </option>
+        ))}
+      </select>
       <button
         onClick={() => setShowFilter(true)}
-        className="bg-primary-500 text-white p-2 rounded text-xl"
+        className="bg-primary-500 text-white p-2 rounded text-xl h-10 w-14 mr-2 ml-5"
       >
-        <MdOutlineFilterAlt />
+        <MdOutlineFilterAlt className="m-auto" />
+      </button>
+      <button
+        onClick={resetFilter}
+        className="bg-red-500 text-white p-2 rounded text-xl h-10 w-14"
+        title="Reset filter"
+      >
+        <LuFilterX className="m-auto" />
       </button>
       <Modal
         title={"Filter products"}
@@ -86,6 +131,7 @@ function FilterProducts({ brands }) {
             <select
               name="limit"
               id="limit"
+              value={limitFilter}
               className="border w-4/5 bg-gray-50 dark:bg-gray-950 rounded py-1 px-2"
               onChange={onChangeLimit}
             >
@@ -145,16 +191,8 @@ function FilterProducts({ brands }) {
                     name={brand}
                     id={brand}
                     className="mr-2"
-                    onChange={(e) => {
-                      const filter = brandsFilter;
-
-                      filter.push({
-                        name: e.target.name,
-                        checked: e.target.checked,
-                      });
-
-                      setBrandsFilter(filter);
-                    }}
+                    checked={brandsFilter.includes(brand)}
+                    onChange={() => handleBrandsFilterChange(brand)}
                   />
                   <label htmlFor={brand}>{brand}</label>
                 </div>

@@ -64,6 +64,12 @@ async function getBrands() {
   return response.data;
 }
 
+async function getCategories() {
+  const response = await axios.get(`${config.apiUrl}/api/products/categories`);
+
+  return response.data;
+}
+
 export {
   getAllProducts,
   getProductById,
@@ -72,6 +78,7 @@ export {
   getProductsByCategory,
   getProductsByBrand,
   getBrands,
+  getCategories,
 };
 
 /**
