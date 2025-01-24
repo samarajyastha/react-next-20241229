@@ -1,9 +1,8 @@
-import config from "@/config/config";
-import axios from "axios";
+import api from "./api";
 
 // POST /api/auth/login
 async function login({ email, password }) {
-  const response = await axios.post(`${config.apiUrl}/api/auth/login`, {
+  const response = await api.post(`/api/auth/login`, {
     email,
     password,
   });
@@ -12,7 +11,7 @@ async function login({ email, password }) {
 }
 
 async function signup({ name, email, password, confirmPassword }) {
-  const response = await axios.post(`${config.apiUrl}/api/auth/register`, {
+  const response = await api.post(`/api/auth/register`, {
     name,
     email,
     password,

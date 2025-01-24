@@ -1,3 +1,8 @@
-'use client'
+import config from "@/config/config";
+import axios from "axios";
 
-export const authToken = localStorage.getItem("authToken");
+const api = axios.create({
+  baseURL: config.apiUrl,
+});
+
+export default api;

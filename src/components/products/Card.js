@@ -1,17 +1,60 @@
+"use client";
+
 import Image from "next/image";
-
-import teslaCar from "@/assets/images/tesla.jpg";
 import Link from "next/link";
+import Modal from "../Modal";
+import placeholder from "@/assets/images/placeholder.jpeg";
+import { MdDelete, MdOutlineCategory, MdOutlineEdit } from "react-icons/md";
 import { PRODUCTS_ROUTE } from "@/constants/routes";
-import { MdOutlineCategory, MdOutlineEdit } from "react-icons/md";
+import { toast, ToastContainer } from "react-toastify";
+import { deleteProduct } from "@/api/products";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useSelector } from "react-redux";
+import { PRODUCT_GRID_VIEW } from "@/constants/productView";
 
-function ProductCard({ product }) {
+function ProductCard({ product, productView }) {
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
+
+  const { user } = useSelector((state) => state.auth);
+
+  const router = useRouter();
+
+  function removeProduct() {
+    setShowDeletePopup(true);
+  }
+
+  async function confirmDeleteProduct() {
+    try {
+      await deleteProduct(product.id);
+
+      toast.success(`${product.name} deleted successfully.`, {
+        autoClose: 1500,
+      });
+
+      router.refresh();
+    } catch (error) {
+      toast.error(error.response.data ?? "", {
+        autoClose: 1500,
+      });
+    } finally {
+      setShowDeletePopup(false);
+    }
+  }
+
+  const className =
+    productView === PRODUCT_GRID_VIEW
+      ? "bg-gray-50 p-5 rounded-xl shadow dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-950"
+      : "grid grid-cols-1 sm:grid-cols-[1fr,1fr] md:grid-cols-[1fr,2fr] gap-x-20 bg-gray-50 p-5 sm:p-10 rounded-xl shadow dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-950";
+
   return (
-    <div className="bg-gray-50 p-5 rounded-xl shadow dark:bg-gray-900 hover:bg-gray-100 dark:hover:bg-gray-950">
+    <div className={className}>
       <Link href={`${PRODUCTS_ROUTE}/${product.id}`}>
         <Image
           alt={product.name}
-          src={product.imageUrls.length > 0 ? product.imageUrls[0] : teslaCar}
+          src={
+            product.imageUrls.length > 0 ? product.imageUrls[0] : placeholder
+          }
           width={500}
           height={500}
           className="h-40 w-auto mx-auto"
@@ -41,6 +84,14 @@ function ProductCard({ product }) {
           >
             <MdOutlineEdit />
           </Link>
+          {user?.roles.includes("ADMIN") && (
+            <button
+              onClick={removeProduct}
+              className="ml-2 p-1 text-red-500 hover:text-red-700 dark:text-white hover:dark:text-gray-200"
+            >
+              <MdDelete />
+            </button>
+          )}
         </div>
         <p className="text-sm text-zinc-600 dark:text-gray-300 max-h-10 overflow-hidden text-ellipsis">
           {product.description}
@@ -50,6 +101,32 @@ function ProductCard({ product }) {
           <span className="dark:text-white">{product.price}</span>
         </p>
       </div>
+
+      <Modal
+        title={"Delete product"}
+        show={showDeletePopup}
+        setShow={setShowDeletePopup}
+      >
+        <p className="py-5">
+          Are you sure you want to delete <b>{product.name}</b>?
+        </p>
+
+        <div className="flex items-center justify-between pt-2">
+          <button
+            className="px-5 py-2 bg-red-500 hover:bg-red-700 text-white rounded"
+            onClick={() => setShowDeletePopup(false)}
+          >
+            Cancel
+          </button>
+          <button
+            className="px-5 py-2 bg-primary-500 hover:bg-primary-700 text-white rounded"
+            onClick={confirmDeleteProduct}
+          >
+            Delete
+          </button>
+        </div>
+      </Modal>
+      <ToastContainer />
     </div>
   );
 }
