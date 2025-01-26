@@ -10,6 +10,7 @@ import {
 import blazer from "@/assets/images/blazer.png";
 import Link from "next/link";
 import { PRODUCTS_ROUTE } from "@/constants/routes";
+import AddProductToCart from "@/components/products/AddToCart";
 
 async function ProductById({ params }) {
   const id = (await params).productId;
@@ -104,10 +105,7 @@ async function ProductById({ params }) {
 
         {/* Add to cart  */}
 
-        <button className="text-white bg-primary-600 px-10 py-3 flex items-center md:text-xl dark:text-white">
-          Add to cart
-          <MdOutlineShoppingCart className="ml-2" />
-        </button>
+        <AddProductToCart product={product} />
       </div>
     </div>
   );
