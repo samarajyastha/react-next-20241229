@@ -1,0 +1,19 @@
+import config from "@/config/config";
+import authToken from "@/constants/authToken";
+import axios from "axios";
+
+async function uploadProfileImage(id, data) {
+  const response = await axios.put(
+    `${config.apiUrl}/api/users/${id}/profile-image`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export { uploadProfileImage };

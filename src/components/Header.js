@@ -10,17 +10,21 @@ import {
   MdOutlineDarkMode,
   MdOutlineLightMode,
 } from "react-icons/md";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { HiMenuAlt3 } from "react-icons/hi";
+import { LIGHT_MODE } from "@/constants/theme";
+import { RxCross2 } from "react-icons/rx";
 import { logoutUser } from "@/redux/auth/authSlice";
 import { toggleTheme } from "@/redux/userPreferences/userPreferencesSlice";
-import { LIGHT_MODE } from "@/constants/theme";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect, useState } from "react";
+import Image from "next/image";
 
 function Header() {
   const { user } = useSelector((state) => state.auth);
   const { theme } = useSelector((state) => state.userPreferences);
 
   const [showProfile, setShowProfile] = useState(false);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -51,24 +55,22 @@ function Header() {
               >
                 {config.appName}
               </Link>
-              <button className="rounded-lg md:hidden focus:outline-none focus:shadow-outline">
-                <svg
-                  fill="currentColor"
-                  viewBox="0 0 20 20"
-                  className="w-6 h-6"
+              <div className="flex items-center md:hidden ">
+                <button onClick={switchTheme} className="mx-2 p-2">
+                  {theme == LIGHT_MODE ? (
+                    <MdOutlineDarkMode className="h-5 w-5" />
+                  ) : (
+                    <MdOutlineLightMode className="h-5 w-5" />
+                  )}
+                </button>
+
+                <button
+                  className="rounded-lg focus:outline-none focus:shadow-outline"
+                  onClick={() => setShowMobileMenu(true)}
                 >
-                  <path
-                    fillRule="evenodd"
-                    d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM9 15a1 1 0 011-1h6a1 1 0 110 2h-6a1 1 0 01-1-1z"
-                    clipRule="evenodd"
-                  />
-                  <path
-                    fillRule="evenodd"
-                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                    clipRule="evenodd"
-                  />
-                </svg>
-              </button>
+                  <HiMenuAlt3 className="h-7 w-7" />
+                </button>
+              </div>
             </div>
             <nav className="flex-col flex-grow hidden pb-4 md:pb-0 md:flex md:justify-end md:flex-row">
               {navLinks.map((navlink) => (
@@ -81,28 +83,47 @@ function Header() {
                 </Link>
               ))}
 
-              <button onClick={switchTheme} className="mx-2 p-2">
+              <button onClick={switchTheme} className="mx-2">
                 {theme == LIGHT_MODE ? (
-                  <MdOutlineDarkMode />
+                  <MdOutlineDarkMode className="w-5 h-5" />
                 ) : (
-                  <MdOutlineLightMode />
+                  <MdOutlineLightMode className="w-5 h-5" />
                 )}
               </button>
 
               {user ? (
                 <div className="relative">
                   <button
-                    className="p-2 hover:bg-slate-100 hover:dark:bg-gray-800 rounded-2xl border"
+                    className="p-2 hover:bg-slate-100 hover:dark:bg-gray-800"
                     onClick={toggleShowProfile}
                   >
-                    <ImUser />
+                    {user.profileImageUrl ? (
+                      <Image
+                        src={user.profileImageUrl}
+                        alt="profile-img"
+                        width={32}
+                        height={32}
+                        className="rounded-full"
+                      />
+                    ) : (
+                      <ImUser className=" rounded-full border" />
+                    )}
                   </button>
                   <div
                     className={`${
                       showProfile ? "block" : "hidden"
                     } w-40 py-3 px-5 rounded-xl bg-gray-50 dark:bg-gray-800 absolute top-10 right-0 shadow`}
+                    onClick={() => setShowProfile(false)}
                   >
                     <h3 className="mb-2 font-semibold ">Hi! {user.name}</h3>
+
+                    <Link
+                      href={"/profile/edit"}
+                      className="bg-slate-200 text-black w-full rounded py-1 flex items-center justify-center my-3"
+                    >
+                      Edit Profile
+                    </Link>
+
                     <button
                       className="bg-primary-500 text-white w-full rounded py-1 flex items-center justify-center"
                       onClick={logout}
@@ -122,6 +143,62 @@ function Header() {
               )}
             </nav>
           </div>
+        </div>
+      </div>
+      <div
+        className={`${
+          showMobileMenu ? "block" : "hidden"
+        } md:hidden absolute top-0 right-0 bottom-0 w-full bg-slate-300 dark:bg-slate-700  bg-opacity-50 dark:bg-opacity-50 h-svh z-40`}
+        onClick={() => setShowMobileMenu(false)}
+      >
+        <div className="w-3/4 h-full bg-white dark:bg-slate-800 float-right p-4 grid grid-cols-1 grid-rows-[auto,1fr,auto]">
+          <div className="border-b pl-2 pb-3 flex items-center justify-between dark:text-white">
+            {user ? (
+              <div className="flex items-center justify-start ">
+                <ImUser className="rounded-full h-7 w-7 mr-3 border " />
+                <h3 className="font-semibold ">Hi! {user.name}</h3>
+              </div>
+            ) : (
+              <h3 className="font-semibold  ">Guest user</h3>
+            )}
+
+            <button
+              className="rounded-lg md:hidden focus:outline-none focus:shadow-outline"
+              onClick={() => setShowMobileMenu(false)}
+            >
+              <RxCross2 className="h-7 w-7" />
+            </button>
+          </div>
+          <nav className="flex flex-col flex-grow md:hidden">
+            {navLinks.map((navlink) => (
+              <Link
+                key={navlink.route}
+                className="px-4 py-2 mt-2 text-sm font-semibold font-nunito bg-transparent rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-primary-100 focus:bg-primary-100 focus:outline-none focus:shadow-outline"
+                href={navlink.route}
+              >
+                {navlink.label}
+              </Link>
+            ))}
+          </nav>
+
+          {user ? (
+            <>
+              <button
+                className="bg-primary-500 text-white w-full rounded py-1 flex items-center justify-center"
+                onClick={logout}
+              >
+                Logout
+                <MdLogout className="ml-2" />
+              </button>
+            </>
+          ) : (
+            <Link
+              href={LOGIN_ROUTE}
+              className="px-4 py-2 mt-2 text-sm font-semibold font-nunito bg-primary-500 text-center text-white rounded-lg dark:hover:bg-gray-600 dark:focus:bg-gray-600  md:mt-0 md:ml-4 hover:bg-primary-600 focus:bg-primary-600 focus:outline-none focus:shadow-outline"
+            >
+              Login
+            </Link>
+          )}
         </div>
       </div>
     </header>

@@ -1,5 +1,4 @@
 import { getProductById } from "@/api/products";
-import Image from "next/image";
 import {
   MdOutlineStarPurple500,
   MdStarHalf,
@@ -7,9 +6,9 @@ import {
   MdArrowBack,
 } from "react-icons/md";
 
-import blazer from "@/assets/images/blazer.png";
 import Link from "next/link";
 import { PRODUCTS_ROUTE } from "@/constants/routes";
+import ProductImageViewer from "@/components/products/ImageViewer";
 
 async function ProductById({ params }) {
   const id = (await params).productId;
@@ -19,19 +18,15 @@ async function ProductById({ params }) {
   return (
     <div className="flex flex-col lg:flex-row justify-around min-h-[90svh]">
       <div className="relative w-full lg:w-1/2 p-10 md:p-16 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
-        <Link
-          href={PRODUCTS_ROUTE}
-          className="flex items-center dark:text-gray-100 hover:underline lg:hidden absolute  top-5 left-5 sm:top-10 sm:left-10"
-        >
-          <MdArrowBack className="mr-2" /> Go Back
-        </Link>
-        <Image
-          src={product.imageUrls[0]}
-          alt="Product details img"
-          width={500}
-          height={500}
-          className="h-auto w-auto"
-        />
+        <div className="pb-3">
+          <Link
+            href={PRODUCTS_ROUTE}
+            className="flex items-center dark:text-gray-100 hover:underline lg:hidden absolute  top-5 left-5 sm:top-10 sm:left-10"
+          >
+            <MdArrowBack className="mr-2" /> Go Back
+          </Link>
+        </div>
+        <ProductImageViewer product={product} />
       </div>
 
       <div className="w-full bg-white dark:bg-gray-700 lg:w-1/2  px-10 py-16 md:px-20">
