@@ -38,3 +38,8 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - template.js
 - loading.js
 - error.js
+
+## Add product to cart
+- Implement adding product in cart without auth
+- Store this in localstorage (redux persist)
+- Requires auth on checkout

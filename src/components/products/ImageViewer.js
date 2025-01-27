@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
+import placeholder from "@/assets/images/placeholder.jpeg";
 import { RxCross2 } from "react-icons/rx";
 
 function ZoomImage({ url, zoom = false, setZoom }) {
@@ -31,6 +32,17 @@ function ZoomImage({ url, zoom = false, setZoom }) {
 function ProductImageViewer({ product }) {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [zoom, setZoom] = useState(false);
+
+  if (product.imageUrls.length == 0)
+    return (
+      <Image
+        alt="product image"
+        src={placeholder}
+        width={500}
+        height={500}
+        className="h-40 w-auto mx-auto"
+      />
+    );
 
   return (
     <div className="grid grid-cols-1 grid-rows-[1fr,auto] gap-10">

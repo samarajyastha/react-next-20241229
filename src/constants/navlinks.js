@@ -3,6 +3,7 @@ const {
   ABOUT_ROUTE,
   CONTACT_ROUTE,
   PRODUCTS_ROUTE,
+  PRODUCTS_CART_ROUTE,
 } = require("./routes");
 
 const navLinks = [
@@ -19,8 +20,8 @@ const navLinks = [
     route: PRODUCTS_ROUTE,
   },
   {
-    label: "Courses",
-    route: "/courses",
+    label: "Cart",
+    route: PRODUCTS_CART_ROUTE,
   },
   {
     label: "Users",
