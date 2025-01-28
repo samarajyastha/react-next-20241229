@@ -1,19 +1,14 @@
 const {
   HOME_ROUTE,
-  ABOUT_ROUTE,
-  CONTACT_ROUTE,
   PRODUCTS_ROUTE,
   PRODUCTS_CART_ROUTE,
+  ORDERS_ROUTE,
 } = require("./routes");
 
 const navLinks = [
   {
     label: "Home",
     route: HOME_ROUTE,
-  },
-  {
-    label: "About",
-    route: ABOUT_ROUTE,
   },
   {
     label: "Products",
@@ -24,16 +19,8 @@ const navLinks = [
     route: PRODUCTS_CART_ROUTE,
   },
   {
-    label: "Users",
-    route: "/users",
-  },
-  {
-    label: "Blogs",
-    route: "/blogs",
-  },
-  {
-    label: "Contact",
-    route: CONTACT_ROUTE,
+    label: "Orders",
+    route: ORDERS_ROUTE,
   },
 ];
 

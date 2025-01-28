@@ -1,6 +1,5 @@
 import FilterProducts from "@/components/products/Filter";
 import Link from "next/link";
-import ProductCard from "@/components/products/Card";
 import { PRODUCTS_ROUTE } from "@/constants/routes";
 import { getAllProducts, getBrands, getCategories } from "@/api/products";
 import SearchProducts from "@/components/products/Search";

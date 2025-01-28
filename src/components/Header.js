@@ -72,7 +72,7 @@ function Header() {
                 </button>
               </div>
             </div>
-            <nav className="flex-col flex-grow hidden pb-4 md:pb-0 md:flex md:justify-end md:flex-row">
+            <nav className="flex-col flex-grow hidden pb-4 md:pb-0 md:flex md:justify-end md:flex-row items-center">
               {navLinks.map((navlink) => (
                 <Link
                   key={navlink.route}

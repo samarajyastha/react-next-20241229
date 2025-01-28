@@ -10,7 +10,12 @@ function AddToCart({ product }) {
 
   function addProductToCart() {
     dispatch(
-      addToCart({ id: product.id, name: product.name, price: product.price })
+      addToCart({
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        image: product.imageUrls[0],
+      })
     );
 
     toast.success(`${product.name} added to cart successfully.`, {

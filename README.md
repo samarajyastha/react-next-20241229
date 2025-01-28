@@ -43,3 +43,9 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 - Implement adding product in cart without auth
 - Store this in localstorage (redux persist)
 - Requires auth on checkout
+
+## Checkout process
+- Create an order, status PENDING => not paid yet
+- After payment, also require shipping address, order is confirmed, status => CONFIRMED
+- Admin: status => SHIPPED
+- Admin: status => DELIVERED

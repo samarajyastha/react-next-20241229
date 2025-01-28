@@ -1,10 +1,14 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
+import RemoveFromCart from "@/components/products/RemoveFromCart";
+import { IoCog } from "react-icons/io5";
+import { LuCircleMinus, LuCirclePlus } from "react-icons/lu";
 import { PRODUCTS_ROUTE } from "@/constants/routes";
 import { decreaseQuantity, increaseQuantity } from "@/redux/cart/cartSlice";
-import Link from "next/link";
-import { LuCircleMinus, LuCirclePlus } from "react-icons/lu";
 import { useDispatch, useSelector } from "react-redux";
+import CheckoutProducts from "@/components/products/Checkout";
 
 function ProductsCart() {
   const { products, totalPrice } = useSelector((state) => state.cart);
@@ -28,6 +32,9 @@ function ProductsCart() {
               <th className="p-2 text-sm text-center">Price</th>
               <th className="p-2 text-sm text-center">Quantity</th>
               <th className="p-2 text-sm text-right">Total</th>
+              <th className="p-2 text-lg text-center">
+                <IoCog className="inline-block" />
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -35,12 +42,20 @@ function ProductsCart() {
               <tr key={index} className="border-b">
                 <td className="p-2">{index + 1}.</td>
                 <td className="p-2" colSpan={2}>
-                  <Link
-                    href={`${PRODUCTS_ROUTE}/${product.id}`}
-                    className="font-semibold text-primary-500 hover:underline capitalize dark:text-primary-200"
-                  >
-                    {product.name}
-                  </Link>
+                  <div className="flex items-center">
+                    <Image
+                      src={product.image}
+                      alt={product.name}
+                      height={40}
+                      width={40}
+                    />
+                    <Link
+                      href={`${PRODUCTS_ROUTE}/${product.id}`}
+                      className="ml-3 font-semibold text-primary-500 hover:underline capitalize dark:text-primary-200"
+                    >
+                      {product.name}
+                    </Link>
+                  </div>
                 </td>
                 <td className="p-2 text-center">{product.price}</td>
                 <td className="p-2 text-center">
@@ -65,11 +80,19 @@ function ProductsCart() {
                 <td className="p-2 text-right">
                   {product.price * product.quantity}
                 </td>
+                <td className="p-2 text-center">
+                  <RemoveFromCart product={product} />
+                </td>
               </tr>
             ))}
+
             <tr>
               <td colSpan={6}>
-                <div className="h-8"></div>
+                <div className="h-8">
+                  {products.length == 0 && (
+                    <div className="text-center">Cart is empty</div>
+                  )}
+                </div>
               </td>
             </tr>
             <tr>
@@ -90,10 +113,7 @@ function ProductsCart() {
           </tbody>
         </table>
       </div>
-
-      <button className="float-right text-white bg-primary-600 px-10 py-3 flex items-center md:text-xl dark:text-white">
-        Checkout
-      </button>
+      <CheckoutProducts />
     </div>
   );
 }
