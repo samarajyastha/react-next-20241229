@@ -16,4 +16,14 @@ async function uploadProfileImage(id, data) {
   return response.data;
 }
 
-export { uploadProfileImage };
+async function updateUser(id, data) {
+  const response = await axios.put(`${config.apiUrl}/api/users/${id}`, data, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  return response.data;
+}
+
+export { uploadProfileImage, updateUser };

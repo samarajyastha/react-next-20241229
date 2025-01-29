@@ -11,4 +11,18 @@ async function createOrder(data) {
 
   return response.data;
 }
-export { createOrder };
+
+async function getOrders(status) {
+  const response = await axios.get(
+    `${config.apiUrl}/api/orders?status=${status}`,
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export { createOrder, getOrders };

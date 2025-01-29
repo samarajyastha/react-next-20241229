@@ -1,9 +1,11 @@
 "use client";
 
-import { uploadProfileImage } from "@/api/user";
+import { updateUser, uploadProfileImage } from "@/api/user";
 import Image from "next/image";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
 
 function EditProfilePage() {
   const [profileImage, setProfileImage] = useState(null);
@@ -11,7 +13,35 @@ function EditProfilePage() {
 
   const { user } = useSelector((state) => state.auth);
 
-  async function submitForm(e) {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      street: user?.address.street,
+      city: user?.address.city,
+      province: user?.address.province,
+      country: user?.address.country,
+    },
+  });
+
+  function submitForm(data) {
+    updateUser(user.id, {
+      address: {
+        street: data.street,
+        city: data.city,
+        province: data.province,
+        country: data.country,
+      },
+    }).then(() => {
+      toast.success("User update successful.", {
+        autoClose: 1500,
+      });
+    });
+  }
+
+  async function updateProfile(e) {
     e.preventDefault();
 
     const formData = new FormData();
@@ -32,45 +62,122 @@ function EditProfilePage() {
   }
 
   return (
-    <div className="p-10 flex flex-col items-center justify-center">
-      <h2 className="text-3xl font-semibold text-center">
-        Update profile image
+    <div className="py-8 sm:p-10 p-5">
+      <h2 className="text-center md:text-left text-2xl md:text-3xl font-semibold text-textColor dark:text-white">
+        Edit profile
       </h2>
-      <form onSubmit={submitForm}>
-        <div className="py-5">
-          <label htmlFor="profile-image">Profile image</label>
-          {localImageUrl && (
-            <div className="p-5 bg-gray-100 dark:bg-zinc-600 my-1 rounded flex items-center justify-evenly">
-              <Image src={localImageUrl} alt="image" height={200} width={200} />
+      <div className="py-5 px-8 rounded-2xl border my-8 dark:text-white">
+        <form onSubmit={handleSubmit(submitForm)}>
+          <div className="py-2">
+            <label htmlFor="address">Address</label>
+            <input
+              type="text"
+              id="street"
+              placeholder="Street"
+              className="border border-gray-500 rounded px-3 py-1 w-full shadow-md mt-1 dark:text-white dark:bg-zinc-600"
+              {...register("street", {
+                required: "Street is required.",
+              })}
+            />
+            <p className="text-red-600 text-sm m-1">{errors.street?.message}</p>
+            <div className="grid md:grid-cols-3 gap-2">
+              <div>
+                <input
+                  type="text"
+                  id="city"
+                  placeholder="City"
+                  className="border border-gray-500 rounded px-3 py-1 w-full shadow-md mt-1 dark:text-white dark:bg-zinc-600"
+                  {...register("city", {
+                    required: "City is required.",
+                  })}
+                />
+                <p className="text-red-600 text-sm m-1">
+                  {errors.city?.message}
+                </p>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  id="province"
+                  placeholder="Province"
+                  className="border border-gray-500 rounded px-3 py-1 w-full shadow-md mt-1 dark:text-white dark:bg-zinc-600"
+                  {...register("province", {
+                    required: "Province is required.",
+                  })}
+                />
+                <p className="text-red-600 text-sm m-1">
+                  {errors.province?.message}
+                </p>
+              </div>
+              <div>
+                <input
+                  type="text"
+                  id="country"
+                  placeholder="Country"
+                  className="border border-gray-500 rounded px-3 py-1 w-full shadow-md mt-1 dark:text-white dark:bg-zinc-600"
+                  {...register("country", {
+                    required: "Country is required.",
+                  })}
+                />
+                <p className="text-red-600 text-sm m-1">
+                  {errors.country?.message}
+                </p>
+              </div>
             </div>
-          )}
+          </div>
+          <div className="pt-5">
+            <input
+              type="submit"
+              value={"Update"}
+              className="bg-primary-600 text-white px-10 py-2 rounded cursor-pointer disabled:bg-primary-300 disabled:cursor-not-allowed"
+            />
+          </div>
+        </form>
+      </div>
 
-          <input
-            type="file"
-            className="border border-gray-500 rounded px-3 py-1 w-full shadow-md mt-1 dark:text-white dark:bg-zinc-600"
-            id="profile-image"
-            onChange={(e) => {
-              const files = [];
-              const urls = [];
+      <div className="py-5 px-8 rounded-2xl border my-8 dark:text-white">
+        <form onSubmit={updateProfile}>
+          <div className="py-2">
+            <label htmlFor="profile-image">Update profile image</label>
+            {localImageUrl && (
+              <div className="p-5 bg-gray-100 dark:bg-zinc-600 my-1 rounded flex items-center justify-evenly">
+                <Image
+                  src={localImageUrl}
+                  alt="image"
+                  height={200}
+                  width={200}
+                />
+              </div>
+            )}
 
-              Array.from(e.target?.files).map((file) => {
-                files.push(file);
-                urls.push(URL.createObjectURL(file));
-              });
+            <input
+              type="file"
+              className="border border-gray-500 rounded px-3 py-1 w-full shadow-md mt-1 dark:text-white dark:bg-zinc-600"
+              id="profile-image"
+              onChange={(e) => {
+                const files = [];
+                const urls = [];
 
-              setProfileImage(files[0]);
-              setLocalImageUrl(urls[0]);
-            }}
-          />
-        </div>
-        <div className="flex justify-center pt-5">
-          <input
-            type="submit"
-            value={"Upload "}
-            className="bg-primary-600 text-white px-10 py-2 rounded cursor-pointer disabled:bg-primary-300 disabled:cursor-not-allowed"
-          />
-        </div>
-      </form>
+                Array.from(e.target?.files).map((file) => {
+                  files.push(file);
+                  urls.push(URL.createObjectURL(file));
+                });
+
+                setProfileImage(files[0]);
+                setLocalImageUrl(urls[0]);
+              }}
+            />
+          </div>
+          <div className="pt-5">
+            <input
+              type="submit"
+              value={"Upload "}
+              className="bg-primary-600 text-white px-10 py-2 rounded cursor-pointer disabled:bg-primary-300 disabled:cursor-not-allowed"
+            />
+          </div>
+        </form>
+      </div>
+      <ToastContainer />
     </div>
   );
 }
