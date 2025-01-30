@@ -13,6 +13,9 @@ const authSlice = createSlice({
       state.user = null;
       localStorage.removeItem("authToken");
     },
+    updateAuthUser: (state, action) => {
+      state.user = action.payload;
+    },
   },
   extraReducers: (builder) =>
     builder
@@ -44,7 +47,7 @@ const authSlice = createSlice({
       }),
 });
 
-export const { logoutUser } = authSlice.actions;
+export const { logoutUser, updateAuthUser } = authSlice.actions;
 
 // loading => pending, success => fulfilled, failure =>rejected
 export default authSlice.reducer;

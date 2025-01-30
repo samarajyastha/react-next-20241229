@@ -1,10 +1,11 @@
 "use client";
 
-import { updateUser, uploadProfileImage } from "@/api/user";
+import { getUserById, updateUser, uploadProfileImage } from "@/api/user";
+import { updateAuthUser } from "@/redux/auth/authSlice";
 import Image from "next/image";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 
 function EditProfilePage() {
@@ -12,6 +13,8 @@ function EditProfilePage() {
   const [localImageUrl, setLocalImageUrl] = useState(null);
 
   const { user } = useSelector((state) => state.auth);
+
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -23,22 +26,34 @@ function EditProfilePage() {
       city: user?.address.city,
       province: user?.address.province,
       country: user?.address.country,
+      phone: user?.phone,
     },
   });
 
-  function submitForm(data) {
-    updateUser(user.id, {
-      address: {
-        street: data.street,
-        city: data.city,
-        province: data.province,
-        country: data.country,
-      },
-    }).then(() => {
+  async function submitForm(data) {
+    try {
+      await updateUser(user.id, {
+        address: {
+          street: data.street,
+          city: data.city,
+          province: data.province,
+          country: data.country,
+        },
+        phone: data.phone,
+      });
+
+      const userData = await getUserById(user.id);
+
+      dispatch(updateAuthUser(userData));
+
       toast.success("User update successful.", {
         autoClose: 1500,
       });
-    });
+    } catch (error) {
+      toast.error(error?.response?.data, {
+        autoClose: 1500,
+      });
+    }
   }
 
   async function updateProfile(e) {
@@ -124,6 +139,18 @@ function EditProfilePage() {
                 </p>
               </div>
             </div>
+          </div>
+          <div className="py-2">
+            <label htmlFor="phone">Phone number</label>
+            <input
+              type="text"
+              id="phone"
+              className="border border-gray-500 rounded px-3 py-1 w-full shadow-md mt-1 dark:text-white dark:bg-zinc-600"
+              {...register("phone", {
+                required: "Phone number is required.",
+              })}
+            />
+            <p className="text-red-600 text-sm m-1">{errors.phone?.message}</p>
           </div>
           <div className="pt-5">
             <input

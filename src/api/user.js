@@ -2,6 +2,16 @@ import config from "@/config/config";
 import authToken from "@/constants/authToken";
 import axios from "axios";
 
+async function getUserById(id) {
+  const response = await axios.get(`${config.apiUrl}/api/users/${id}`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  return response.data;
+}
+
 async function uploadProfileImage(id, data) {
   const response = await axios.put(
     `${config.apiUrl}/api/users/${id}/profile-image`,
@@ -26,4 +36,4 @@ async function updateUser(id, data) {
   return response.data;
 }
 
-export { uploadProfileImage, updateUser };
+export { uploadProfileImage, updateUser, getUserById };
