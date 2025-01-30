@@ -45,7 +45,7 @@ function OrdersCard({ order, status }) {
           <span className="font-semibold ml-2">${order.totalPrice}</span>
         </p>
         <div className={status == ORDER_PENDING ? "block" : "hidden"}>
-          <ConfirmOrder />
+          <ConfirmOrder order={order} />
         </div>
       </div>
     </div>

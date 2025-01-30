@@ -2,8 +2,9 @@ import { useState } from "react";
 import Modal from "../Modal";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import { checkoutOrder } from "@/api/orders";
 
-function ConfirmOrder() {
+function ConfirmOrder({ order }) {
   const [showConfirmPopup, setShowConfirmPopup] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
@@ -13,7 +14,19 @@ function ConfirmOrder() {
   function onClickConfirm() {
     // setShowConfirmPopup(true);
 
-    router.push("/profile/edit");
+    // router.push("/profile/edit");
+
+    checkoutOrder(order.id, {
+      returnUrl: "http://localhost:3000/products/orders/payment",
+      websiteUrl: "http://localhost:3000/",
+      totalAmount: order.totalPrice,
+      orderName: order.id,
+    })
+      .then((res) => {
+        window.location.href = res.payment_url;
+        console.log(res);
+      })
+      .catch((err) => console.log(err));
   }
 
   function confirmOrder() {}
