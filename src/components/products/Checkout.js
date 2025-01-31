@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useState } from "react";
 import { clearCart } from "@/redux/cart/cartSlice";
 
-function CheckoutProducts() {
+function CheckoutProducts({ disabled }) {
   const [showCheckoutPopup, setShowCheckoutPopup] = useState(false);
 
   const { products, totalPrice } = useSelector((state) => state.cart);
@@ -40,8 +40,9 @@ function CheckoutProducts() {
   return (
     <>
       <button
+        disabled={disabled}
         onClick={() => setShowCheckoutPopup(true)}
-        className="float-right text-white bg-primary-600 px-10 py-3 flex items-center md:text-xl dark:text-white"
+        className="float-right text-white bg-primary-600 px-10 py-3 flex items-center md:text-xl dark:text-white disabled:bg-opacity-75"
       >
         Checkout
       </button>

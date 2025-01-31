@@ -1,20 +1,23 @@
 "use client";
 
-import { getUserById, updateUser, uploadProfileImage } from "@/api/user";
+import { getUserById, updateUser } from "@/api/user";
+import ProfileImage from "@/components/profile/Image";
+import Spinner from "@/components/Spinner";
+import { LOGIN_ROUTE } from "@/constants/routes";
 import { updateAuthUser } from "@/redux/auth/authSlice";
-import Image from "next/image";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 
 function EditProfilePage() {
-  const [profileImage, setProfileImage] = useState(null);
-  const [localImageUrl, setLocalImageUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const { user } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const {
     register,
@@ -22,15 +25,19 @@ function EditProfilePage() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      street: user?.address.street,
       city: user?.address.city,
-      province: user?.address.province,
       country: user?.address.country,
+      name: user?.name,
+      email: user?.email,
       phone: user?.phone,
+      province: user?.address.province,
+      street: user?.address.street,
     },
   });
 
   async function submitForm(data) {
+    setLoading(true);
+
     try {
       await updateUser(user.id, {
         address: {
@@ -40,6 +47,7 @@ function EditProfilePage() {
           country: data.country,
         },
         phone: data.phone,
+        name: data.name,
       });
 
       const userData = await getUserById(user.id);
@@ -53,36 +61,45 @@ function EditProfilePage() {
       toast.error(error?.response?.data, {
         autoClose: 1500,
       });
+    } finally {
+      setLoading(false);
     }
   }
 
-  async function updateProfile(e) {
-    e.preventDefault();
-
-    const formData = new FormData();
-    formData.append("image", profileImage);
-
-    try {
-      await uploadProfileImage(user.id, formData);
-
-      toast.success("Success", {
-        autoClose: 1500,
-        onClose: () => router.replace(PRODUCTS_ROUTE),
-      });
-    } catch (error) {
-      toast.error(error.response.data, {
-        autoClose: 1500,
-      });
-    }
-  }
+  useEffect(() => {
+    if (!user) router.replace(LOGIN_ROUTE);
+  }, [router, user]);
 
   return (
     <div className="py-8 sm:p-10 p-5">
-      <h2 className="text-center md:text-left text-2xl md:text-3xl font-semibold text-textColor dark:text-white">
-        Edit profile
-      </h2>
+      <ProfileImage />
       <div className="py-5 px-8 rounded-2xl border my-8 dark:text-white">
         <form onSubmit={handleSubmit(submitForm)}>
+          <div className="py-2">
+            <label htmlFor="name">Name</label>
+            <input
+              type="text"
+              id="name"
+              className="border border-gray-500 rounded px-3 py-1 w-full shadow-md mt-1 dark:text-white dark:bg-zinc-600"
+              {...register("name", {
+                required: "Name is required.",
+              })}
+            />
+            <p className="text-red-600 text-sm m-1">{errors.name?.message}</p>
+          </div>
+          <div className="py-2">
+            <label htmlFor="email">Email</label>
+            <input
+              type="text"
+              id="email"
+              disabled={true}
+              className="disabled:bg-slate-100 disabled:opacity-80 border border-gray-500 rounded px-3 py-1 w-full shadow-md mt-1 dark:text-white dark:bg-zinc-600"
+              {...register("email", {
+                required: "Email is required.",
+              })}
+            />
+            <p className="text-red-600 text-sm m-1">{errors.name?.message}</p>
+          </div>
           <div className="py-2">
             <label htmlFor="address">Address</label>
             <input
@@ -153,57 +170,24 @@ function EditProfilePage() {
             <p className="text-red-600 text-sm m-1">{errors.phone?.message}</p>
           </div>
           <div className="pt-5">
-            <input
+            <button
+              disabled={loading}
               type="submit"
-              value={"Update"}
-              className="bg-primary-600 text-white px-10 py-2 rounded cursor-pointer disabled:bg-primary-300 disabled:cursor-not-allowed"
-            />
+              className="bg-primary-600 text-white px-10 h-10 rounded cursor-pointer disabled:bg-primary-300 disabled:cursor-not-allowed flex items-center disabled:bg-opacity-80"
+            >
+              {loading ? (
+                <>
+                  <span>Updating</span>
+                  <Spinner className="h-6 w-6 ml-2" />
+                </>
+              ) : (
+                "Update"
+              )}
+            </button>
           </div>
         </form>
       </div>
 
-      <div className="py-5 px-8 rounded-2xl border my-8 dark:text-white">
-        <form onSubmit={updateProfile}>
-          <div className="py-2">
-            <label htmlFor="profile-image">Update profile image</label>
-            {localImageUrl && (
-              <div className="p-5 bg-gray-100 dark:bg-zinc-600 my-1 rounded flex items-center justify-evenly">
-                <Image
-                  src={localImageUrl}
-                  alt="image"
-                  height={200}
-                  width={200}
-                />
-              </div>
-            )}
-
-            <input
-              type="file"
-              className="border border-gray-500 rounded px-3 py-1 w-full shadow-md mt-1 dark:text-white dark:bg-zinc-600"
-              id="profile-image"
-              onChange={(e) => {
-                const files = [];
-                const urls = [];
-
-                Array.from(e.target?.files).map((file) => {
-                  files.push(file);
-                  urls.push(URL.createObjectURL(file));
-                });
-
-                setProfileImage(files[0]);
-                setLocalImageUrl(urls[0]);
-              }}
-            />
-          </div>
-          <div className="pt-5">
-            <input
-              type="submit"
-              value={"Upload "}
-              className="bg-primary-600 text-white px-10 py-2 rounded cursor-pointer disabled:bg-primary-300 disabled:cursor-not-allowed"
-            />
-          </div>
-        </form>
-      </div>
       <ToastContainer />
     </div>
   );

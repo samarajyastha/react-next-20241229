@@ -113,7 +113,7 @@ function ProductsCart() {
           </tbody>
         </table>
       </div>
-      <CheckoutProducts />
+      <CheckoutProducts disabled={products.length === 0} />
     </div>
   );
 }

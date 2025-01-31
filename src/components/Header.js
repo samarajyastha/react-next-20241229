@@ -26,6 +26,8 @@ function Header() {
   const [showProfile, setShowProfile] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
+  const isAuth = user ? true : false;
+
   const dispatch = useDispatch();
 
   function toggleShowProfile() {
@@ -73,15 +75,19 @@ function Header() {
               </div>
             </div>
             <nav className="flex-col flex-grow hidden pb-4 md:pb-0 md:flex md:justify-end md:flex-row items-center">
-              {navLinks.map((navlink) => (
-                <Link
-                  key={navlink.route}
-                  className="px-4 py-2 mt-2 text-sm font-semibold font-nunito bg-transparent rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-primary-100 focus:bg-primary-100 focus:outline-none focus:shadow-outline"
-                  href={navlink.route}
-                >
-                  {navlink.label}
-                </Link>
-              ))}
+              {navLinks.map((navlink) => {
+                if (navlink.isAuth && !user) return <></>;
+
+                return (
+                  <Link
+                    key={navlink.route}
+                    className="px-4 py-2 mt-2 text-sm font-semibold font-nunito bg-transparent rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-primary-100 focus:bg-primary-100 focus:outline-none focus:shadow-outline"
+                    href={navlink.route}
+                  >
+                    {navlink.label}
+                  </Link>
+                );
+              })}
 
               <button onClick={switchTheme} className="mx-2">
                 {theme == LIGHT_MODE ? (
@@ -103,7 +109,7 @@ function Header() {
                         alt="profile-img"
                         width={32}
                         height={32}
-                        className="rounded-full"
+                        className="rounded-full h-8 w-8"
                       />
                     ) : (
                       <ImUser className=" rounded-full border" />
@@ -112,7 +118,7 @@ function Header() {
                   <div
                     className={`${
                       showProfile ? "block" : "hidden"
-                    } w-40 py-3 px-5 rounded-xl bg-gray-50 dark:bg-gray-800 absolute top-10 right-0 shadow`}
+                    } w-40 py-3 px-3 rounded-xl bg-gray-50 dark:bg-gray-800 absolute top-10 right-0 shadow`}
                     onClick={() => setShowProfile(false)}
                   >
                     <h3 className="mb-2 font-semibold ">Hi! {user.name}</h3>
@@ -121,7 +127,7 @@ function Header() {
                       href={"/profile/edit"}
                       className="bg-slate-200 text-black w-full rounded py-1 flex items-center justify-center my-3"
                     >
-                      Edit Profile
+                      Profile
                     </Link>
 
                     <button
@@ -170,15 +176,19 @@ function Header() {
             </button>
           </div>
           <nav className="flex flex-col flex-grow md:hidden">
-            {navLinks.map((navlink) => (
-              <Link
-                key={navlink.route}
-                className="px-4 py-2 mt-2 text-sm font-semibold font-nunito bg-transparent rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-primary-100 focus:bg-primary-100 focus:outline-none focus:shadow-outline"
-                href={navlink.route}
-              >
-                {navlink.label}
-              </Link>
-            ))}
+            {navLinks.map((navlink) => {
+              if (navlink.isAuth && !user) return <></>;
+
+              return (
+                <Link
+                  key={navlink.route}
+                  className="px-4 py-2 mt-2 text-sm font-semibold font-nunito bg-transparent rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-primary-100 focus:bg-primary-100 focus:outline-none focus:shadow-outline"
+                  href={navlink.route}
+                >
+                  {navlink.label}
+                </Link>
+              );
+            })}
           </nav>
 
           {user ? (
