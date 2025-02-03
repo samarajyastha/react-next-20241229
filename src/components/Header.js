@@ -18,6 +18,7 @@ import { toggleTheme } from "@/redux/userPreferences/userPreferencesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 function Header() {
   const { user } = useSelector((state) => state.auth);
@@ -26,9 +27,9 @@ function Header() {
   const [showProfile, setShowProfile] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
 
-  const isAuth = user ? true : false;
-
   const dispatch = useDispatch();
+
+  const router = useRouter();
 
   function toggleShowProfile() {
     setShowProfile(!showProfile);
@@ -36,6 +37,7 @@ function Header() {
 
   function logout() {
     dispatch(logoutUser());
+    router.push(LOGIN_ROUTE);
     setShowProfile(false);
   }
 
@@ -76,7 +78,8 @@ function Header() {
             </div>
             <nav className="flex-col flex-grow hidden pb-4 md:pb-0 md:flex md:justify-end md:flex-row items-center">
               {navLinks.map((navlink) => {
-                if (navlink.isAuth && !user) return <></>;
+                if (navlink.isAuth && !user)
+                  return <div key={navlink.route}></div>;
 
                 return (
                   <Link
@@ -177,7 +180,8 @@ function Header() {
           </div>
           <nav className="flex flex-col flex-grow md:hidden">
             {navLinks.map((navlink) => {
-              if (navlink.isAuth && !user) return <></>;
+              if (navlink.isAuth && !user)
+                return <div key={navlink.route}></div>;
 
               return (
                 <Link

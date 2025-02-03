@@ -12,9 +12,19 @@ async function createOrder(data) {
   return response.data;
 }
 
-async function getOrders(status) {
+async function getOrders() {
+  const response = await axios.get(`${config.apiUrl}/api/orders`, {
+    headers: {
+      Authorization: `Bearer ${authToken}`,
+    },
+  });
+
+  return response.data;
+}
+
+async function getOrdersByUser(status, userId) {
   const response = await axios.get(
-    `${config.apiUrl}/api/orders?status=${status}`,
+    `${config.apiUrl}/api/orders/users/${userId}?status=${status}`,
     {
       headers: {
         Authorization: `Bearer ${authToken}`,
@@ -53,4 +63,4 @@ async function confirmOrder(id, status) {
   return response.data;
 }
 
-export { createOrder, getOrders, checkoutOrder, confirmOrder };
+export { createOrder, getOrdersByUser, checkoutOrder, confirmOrder, getOrders };
