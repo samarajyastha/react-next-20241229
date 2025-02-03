@@ -1,7 +1,7 @@
 import "./globals.css";
-import config from "@/config/config";
 import MainLayout from "@/layouts/MainLayout";
 import Providers from "@/redux/providers";
+import config from "@/config/config";
 
 // Static metadata
 export const metadata = {

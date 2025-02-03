@@ -63,4 +63,25 @@ async function confirmOrder(id, status) {
   return response.data;
 }
 
-export { createOrder, getOrdersByUser, checkoutOrder, confirmOrder, getOrders };
+async function updateStatus(id, data) {
+  const response = await axios.put(
+    `${config.apiUrl}/api/orders/${id}/status`,
+    data,
+    {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
+
+  return response.data;
+}
+
+export {
+  checkoutOrder,
+  confirmOrder,
+  createOrder,
+  getOrders,
+  getOrdersByUser,
+  updateStatus,
+};

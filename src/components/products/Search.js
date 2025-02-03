@@ -22,7 +22,7 @@ function SearchProducts() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [delayedName]);
   return (
-    <div className="flex items-center">
+    <div className="flex items-center w-full">
       <label
         htmlFor="name"
         className="whitespace-nowrap mr-2 bg-slate-200 dark:bg-slate-900 dark:text-white h-10 rounded flex items-center px-3"

@@ -10,13 +10,19 @@ import EditOrderStatus from "./EditStatus";
 function OrdersTable() {
   const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
+  const [isStatusUpdated, setIsStatusUpdated] = useState(true);
 
   useEffect(() => {
+    if (!isStatusUpdated) return;
+
     getOrders()
       .then((data) => setOrders(data))
       .catch((error) => console.log(error))
-      .finally(() => setLoading(false));
-  }, []);
+      .finally(() => {
+        setLoading(false);
+        setIsStatusUpdated(false);
+      });
+  }, [isStatusUpdated]);
 
   if (loading)
     return (
@@ -44,8 +50,8 @@ function OrdersTable() {
         {orders.map((order) => (
           <tr key={order.id}>
             <td className="text-xs px-3 border border-slate-400">{order.id}</td>
-            <td className="text-xs text-blue-600 px-3 border border-slate-400">
-              {order.userId}
+            <td className="text-xs text-blue-600 px-3 border border-slate-400 hover:underline">
+              <Link href={`/users/${order.userId}`}>{order.userId}</Link>
             </td>
             <td className="py-2 px-3 border border-slate-400">
               {order.orderItems.map((item, index) => (
@@ -90,10 +96,15 @@ function OrdersTable() {
               </span>
             </td>
             <td className="px-3 text-sm border border-slate-400 text-center">
-              <EditOrderStatus />
-              <button className="h-7 w-6 bg-red-600 p-1 rounded text-white mx-1">
-                <BsTrash />
-              </button>
+              <div className="flex items-center gap-x-2">
+                <EditOrderStatus
+                  order={order}
+                  setIsStatusUpdated={setIsStatusUpdated}
+                />
+                <button className="h-7 w-6 bg-red-600 p-1 rounded text-white">
+                  <BsTrash />
+                </button>
+              </div>
             </td>
           </tr>
         ))}

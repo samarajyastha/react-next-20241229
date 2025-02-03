@@ -7,7 +7,6 @@ export default function UserLayout({ children }) {
 
   return (
     <div>
-      <h1 className="text-2xl m-3">User layout {randomNumber}</h1>
       {children}
     </div>
   );

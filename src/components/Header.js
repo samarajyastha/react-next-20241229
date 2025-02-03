@@ -19,6 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import SearchProducts from "./products/Search";
 
 function Header() {
   const { user } = useSelector((state) => state.auth);
@@ -51,7 +52,7 @@ function Header() {
     <header className="shadow sticky top-0 z-10">
       <div className="antialiased bg-gray-100 dark:bg-gray-950">
         <div className="w-full text-gray-700 bg-white dark:text-gray-200 dark:bg-gray-900">
-          <div className="flex flex-col max-w-screen-xl mx-auto md:items-center md:justify-between md:flex-row">
+          <div className="grid grid-cols-[1fr,auto] max-w-screen-xl mx-auto md:items-center md:justify-between md:flex-row">
             <div className="flex flex-row items-center justify-between p-4">
               <Link
                 href={HOME_ROUTE}
@@ -76,7 +77,7 @@ function Header() {
                 </button>
               </div>
             </div>
-            <nav className="flex-col flex-grow hidden pb-4 md:pb-0 md:flex md:justify-end md:flex-row items-center">
+            <nav className="flex-col hidden pb-4 md:pb-0 md:flex md:justify-end md:flex-row items-center">
               {navLinks.map((navlink) => {
                 if (navlink.isAuth && !user)
                   return <div key={navlink.route}></div>;
