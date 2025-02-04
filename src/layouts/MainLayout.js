@@ -13,7 +13,6 @@ function MainLayout({ children }) {
       <Notification />
       <Header />
       {children}
-      <Footer />
     </main>
   );
 }

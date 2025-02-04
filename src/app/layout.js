@@ -3,6 +3,9 @@ import MainLayout from "@/layouts/MainLayout";
 import Providers from "@/redux/providers";
 import config from "@/config/config";
 
+import "swiper/css";
+import "swiper/css/pagination";
+
 // Static metadata
 export const metadata = {
   title: config.appName,

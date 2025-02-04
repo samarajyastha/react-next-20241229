@@ -165,11 +165,21 @@ function Header() {
           <div className="border-b pl-2 pb-3 flex items-center justify-between dark:text-white">
             {user ? (
               <div className="flex items-center justify-start ">
-                <ImUser className="rounded-full h-7 w-7 mr-3 border " />
+                {user.profileImageUrl ? (
+                  <Image
+                    src={user.profileImageUrl}
+                    alt="profile-img"
+                    width={32}
+                    height={32}
+                    className="rounded-full h-8 w-8 mr-3"
+                  />
+                ) : (
+                  <ImUser className=" rounded-full border" />
+                )}
                 <h3 className="font-semibold ">Hi! {user.name}</h3>
               </div>
             ) : (
-              <h3 className="font-semibold  ">Guest user</h3>
+              <h3 className="font-semibold  mr-3">Guest user</h3>
             )}
 
             <button

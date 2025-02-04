@@ -1,16 +1,16 @@
 import { getProductsByBrand } from "@/api/products";
 import ProductList from "@/components/products/List";
 
-async function ProductsByBrand({ params }) {
-  const brand = (await params).brandId;
+async function PopularBrand() {
+  const products = await getProductsByBrand("Apple");
 
-  const products = await getProductsByBrand(brand);
+  console.log(products);
 
   return (
-    <div className="py-8">
+    <div className="py-10 max-w-screen-xl mx-auto">
       <div className="flex flex-col md:flex-row items-center justify-between px-5">
         <h1 className="text-center md:text-left text-3xl md:text-4xl font-semibold text-textColor px-2 dark:text-white">
-          Brand: {brand}
+          Popular brand
         </h1>
       </div>
 
@@ -19,4 +19,4 @@ async function ProductsByBrand({ params }) {
   );
 }
 
-export default ProductsByBrand;
+export default PopularBrand;
