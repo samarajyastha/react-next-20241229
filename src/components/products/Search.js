@@ -1,6 +1,7 @@
 "use client";
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { PRODUCTS_ROUTE } from "@/constants/routes";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { RiSearchLine } from "react-icons/ri";
 import { useDebounce } from "use-debounce";
@@ -10,17 +11,17 @@ function SearchProducts() {
   const [delayedName] = useDebounce(name, 300);
 
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams.toString());
     params.set("name", name);
 
-    router.push(pathname + "?" + params.toString());
+    router.push(PRODUCTS_ROUTE + "?" + params.toString());
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [delayedName]);
+
   return (
     <div className="flex items-center w-full">
       <label

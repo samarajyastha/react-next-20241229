@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import config from "@/config/config";
 import navLinks from "@/constants/navlinks";
 import { HOME_ROUTE, LOGIN_ROUTE } from "@/constants/routes";
 import { ImUser } from "react-icons/im";
@@ -23,6 +22,7 @@ import Image from "next/image";
 
 function Header() {
   const { user } = useSelector((state) => state.auth);
+  const { products } = useSelector((state) => state.cart);
   const { theme } = useSelector((state) => state.userPreferences);
 
   const [showProfile, setShowProfile] = useState(false);
@@ -58,7 +58,13 @@ function Header() {
                 href={HOME_ROUTE}
                 className="text-lg font-semibold font-nunito-extra-bold tracking-widest text-primary-500 uppercase rounded-lg dark:text-white focus:outline-none focus:shadow-outline"
               >
-                <Image src={logo} alt="logo" height={200} width={500} className="h-10 w-auto" />
+                <Image
+                  src={logo}
+                  alt="logo"
+                  height={200}
+                  width={500}
+                  className="h-10 w-auto"
+                />
               </Link>
               <div className="flex items-center md:hidden ">
                 <button onClick={switchTheme} className="mx-2 p-2">
@@ -83,13 +89,19 @@ function Header() {
                   return <div key={navlink.route}></div>;
 
                 return (
-                  <Link
-                    key={navlink.route}
-                    className="px-4 py-2 mt-2 text-sm font-semibold font-nunito bg-transparent rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-primary-100 focus:bg-primary-100 focus:outline-none focus:shadow-outline"
-                    href={navlink.route}
-                  >
-                    {navlink.label}
-                  </Link>
+                  <div key={navlink.route} className="relative">
+                    <Link
+                      className="px-4 py-2 mt-2 text-sm font-semibold font-nunito bg-transparent rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 md:mt-0 md:ml-4 hover:text-gray-900 focus:text-gray-900 hover:bg-primary-100 focus:bg-primary-100 focus:outline-none focus:shadow-outline"
+                      href={navlink.route}
+                    >
+                      {navlink.label}
+                    </Link>
+                    {navlink.notification && (
+                      <span className="absolute top-0 -right-1 bg-red-500 text-white rounded-full text-[0.6rem] h-4 w-4 flex items-center justify-center">
+                        {products.length}
+                      </span>
+                    )}
+                  </div>
                 );
               })}
 

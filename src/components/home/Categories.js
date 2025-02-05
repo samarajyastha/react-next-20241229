@@ -39,7 +39,7 @@ const categories = [
 
 function HomeCategories() {
   return (
-    <div className="py-10 px-6">
+    <div className="pt-6 pb-14 px-6 max-w-screen-xl mx-auto">
       <h2 className="text-4xl text-center font-semibold mb-8 dark:text-white">
         Popular categories
       </h2>

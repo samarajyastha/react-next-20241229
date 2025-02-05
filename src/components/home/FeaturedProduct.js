@@ -38,8 +38,8 @@ function HomeFeaturedProduct() {
         <Image
           src={s24}
           alt="image"
-          height={500}
-          width={500}
+          height={800}
+          width={800}
           className="max-h-[50vh] w-auto md:max-h-full"
         />
       </div>
