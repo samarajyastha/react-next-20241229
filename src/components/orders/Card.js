@@ -15,29 +15,37 @@ function OrdersCard({ order, status }) {
         </span>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 m-6">
-        {order.orderItems.map((item, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-[auto,1fr] gap-5 py-3 px-5 rounded-xl border dark:text-white"
-          >
-            <Image
-              src={item.product.imageUrls[0]}
-              alt={item.product.name}
-              height={100}
-              width={100}
-              className="h-24 w-auto"
-            />
-            <div>
-              <h5 className="font-semibold text-xl">{item.product.name}</h5>
-              <p className="text-sm">
-                Brand:
-                <span className="font-semibold ml-2">{item.product.brand}</span>
-              </p>
-              <p className="text-sm">${Math.floor(item.product.price * 0.9)}</p>
-              <p>x {item.quantity}</p>
+        {order.orderItems.map((item, index) => {
+          if (!item?.product) return;
+
+          return (
+            <div
+              key={index}
+              className="grid grid-cols-[auto,1fr] gap-5 py-3 px-5 rounded-xl border dark:text-white"
+            >
+              <Image
+                src={item.product.imageUrls[0]}
+                alt={item.product.name}
+                height={100}
+                width={100}
+                className="h-24 w-auto"
+              />
+              <div>
+                <h5 className="font-semibold text-xl">{item.product.name}</h5>
+                <p className="text-sm">
+                  Brand:
+                  <span className="font-semibold ml-2">
+                    {item.product.brand}
+                  </span>
+                </p>
+                <p className="text-sm">
+                  ${Math.floor(item.product.price * 0.9)}
+                </p>
+                <p>x {item.quantity}</p>
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
       <div className="bg-slate-200 dark:bg-slate-800 dark:text-white rounded-b-2xl py-3 px-5 flex justify-between items-center">
         <p>
