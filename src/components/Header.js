@@ -10,16 +10,16 @@ import {
   MdOutlineDarkMode,
   MdOutlineLightMode,
 } from "react-icons/md";
-import { HiMenuAlt3 } from "react-icons/hi";
-import { LIGHT_MODE } from "@/constants/theme";
-import { RxCross2 } from "react-icons/rx";
-import { logoutUser } from "@/redux/auth/authSlice";
-import { toggleTheme } from "@/redux/userPreferences/userPreferencesSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import SearchProducts from "./products/Search";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleTheme } from "@/redux/userPreferences/userPreferencesSlice";
+import { logoutUser } from "@/redux/auth/authSlice";
+import { RxCross2 } from "react-icons/rx";
+import { LIGHT_MODE } from "@/constants/theme";
+import { HiMenuAlt3 } from "react-icons/hi";
+import logo from "@/assets/images/logo.png";
+import Image from "next/image";
 
 function Header() {
   const { user } = useSelector((state) => state.auth);
@@ -58,7 +58,7 @@ function Header() {
                 href={HOME_ROUTE}
                 className="text-lg font-semibold font-nunito-extra-bold tracking-widest text-primary-500 uppercase rounded-lg dark:text-white focus:outline-none focus:shadow-outline"
               >
-                {config.appName}
+                <Image src={logo} alt="logo" height={200} width={500} className="h-10 w-auto" />
               </Link>
               <div className="flex items-center md:hidden ">
                 <button onClick={switchTheme} className="mx-2 p-2">
