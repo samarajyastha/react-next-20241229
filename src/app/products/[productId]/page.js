@@ -10,6 +10,7 @@ import { PRODUCTS_ROUTE } from "@/constants/routes";
 import ProductImageViewer from "@/components/products/ImageViewer";
 import AddToCart from "@/components/products/AddToCart";
 import RelatedProducts from "@/components/products/RelatedProducts";
+import ProductDescription from "@/components/products/Description";
 
 async function ProductById({ params }) {
   const id = (await params).productId;
@@ -89,7 +90,9 @@ async function ProductById({ params }) {
               </h3>
             </div>
 
-            <p className="mt-5 dark:text-white">{product.description}</p>
+            <p className="mt-5 dark:text-white">
+              <ProductDescription description={product.description} />
+            </p>
 
             <ul className="mt-3 px-6 list-disc dark:text-gray-100">
               <li>Features: High quality material</li>
